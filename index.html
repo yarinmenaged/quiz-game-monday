@@ -1,161 +1,206 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title></title>
-       
+
     <style type="text/css">
+        #form1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table td {
+            width: 100%;
+        }
+
         .correct_style {
-    
-	-moz-box-shadow: 0px 1px 0px 0px #1c1b18;
-	-webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
-	box-shadow: 0px 1px 0px 0px #1c1b18;
-	background-color:forestgreen;
-	-moz-border-radius:15px;
-	-webkit-border-radius:15px;
-	border-radius:15px;
-	border:4px solid red;
-	display:inline-block;
-	cursor:pointer;
-	color:#505739;
-    font-family: Calibri;
-	font-size:25px;
-	font-weight:bold;
-	padding:12px 16px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #1c1b18;
-    border-color:black;
 
-}
+            -moz-box-shadow: 0px 1px 0px 0px #1c1b18;
+            -webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
+            box-shadow: 0px 1px 0px 0px #1c1b18;
+            background-color: forestgreen;
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            border: 4px solid red;
+            display: inline-block;
+            cursor: pointer;
+            color: #505739;
+            font-family: Calibri;
+            font-size: 25px;
+            font-weight: bold;
+            padding: 12px 16px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #1c1b18;
+            border-color: black;
+            width: 100%;
 
-    .myButton {
-	-moz-box-shadow: 0px 1px 0px 0px #1c1b18;
-	-webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
-	box-shadow: 0px 1px 0px 0px #1c1b18;
-	background-color:beige;
-	-moz-border-radius:20px;
-	-webkit-border-radius:20px;
-	border-radius:10px;
-	border:4px solid red;
-	display:inline-block;
-	cursor:pointer;
-	color:#1c1b18;
-    font-family: Calibri;
-	font-size:25px;
-	font-weight:bold;
-	padding:12px 16px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #1c1b18;
-    border-color:black;
-    }
-    .myButton:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ccc2a6), color-stop(1, #eae0c2));
-	background:-moz-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
-	background:-webkit-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
-	background:-o-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
-	background:linear-gradient(to bottom, #ccc2a6 5%, #eae0c2 100%);
-	background-color:black;
-    }
+        }
 
-    .input {
-    position: relative;
-    z-index: 1;
-    display: inline-block;
-    margin: 1em;
-    max-width: 350px;
-    width: calc(100% - 2em);
-    vertical-align: top;
-    }
-</style>
+        .text {
+            -moz-box-shadow: 0px 1px 0px 0px #1c1b18;
+            -webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
+            box-shadow: 0px 1px 0px 0px #1c1b18;
+            background-color: beige;
+            -moz-border-radius: 20px;
+            border-radius: 10px;
+            border: 4px solid black;
+            color: #1c1b18;
+            font-family: Calibri;
+            font-size: 25px;
+            font-weight: bold;
+            padding: 12px 16px;
+            text-align: center;
+            opacity: 90%;
+        }
 
-     <script type="text/javascript">
-         const myArray3 = [];
-         var numberQuestion = 0;
-         var score = 0;
-         var time = "off";
+        .myButton {
+            -moz-box-shadow: 0px 1px 0px 0px #1c1b18;
+            -webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
+            box-shadow: 0px 1px 0px 0px #1c1b18;
+            background-color: beige;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 10px;
+            border: 4px solid black;
+            display: inline-block;
+            cursor: pointer;
+            color: #1c1b18;
+            font-family: Calibri;
+            font-size: 25px;
+            font-weight: bold;
+            padding: 12px 16px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #1c1b18;
+            width: 100%;
+            text-align: center;
+            opacity: 90%;
+        }
 
-         // shuffle array values.
-         function shuffle(array) {
-             array.sort(() => Math.random() - 0.5);
-         }
+        .myButton:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ccc2a6), color-stop(1, #eae0c2));
+            background: -moz-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
+            background: -webkit-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
+            background: -o-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
+            background: linear-gradient(to bottom, #ccc2a6 5%, #eae0c2 100%);
+            background-color: black;
+        }
 
-         // replace substring with "☼" in myArray3
-         function indicate(str) {
-             myArray3[numberQuestion] = myArray3[numberQuestion].replace(str, "☼");
-         }
+        .input {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            margin: 1em;
+            max-width: 350px;
+            width: calc(100% - 2em);
+            vertical-align: top;
+        }
+    </style>
 
-         // get the next question.
-         function nextQuestion() {
-             // split a question data from api URL to attributs and init.
-             indicate("category"); indicate("type"); indicate("difficulty");
-             indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
-             const myArray2 = myArray3[numberQuestion].split("☼");
-             var category = myArray2[1].slice(2, myArray2[1].length - 2);
-             var type = myArray2[2].slice(3, myArray2[2].length - 3);
-             var difficulty = myArray2[3].slice(3, myArray2[3].length - 3);
-             var question = myArray2[4].slice(3, myArray2[4].length - 3);
-             // replace &quot with "
-             while (question.indexOf('&quot') > -1) {
-                 question = question.replace("&quot;", '"');
-             }
-             // replace &#039; with '
-             while (question.indexOf('&#039;') > -1) {
-                 question = question.replace("&#039;", "'");
-             }
+    <script type="text/javascript">
+        const myArray3 = [];
+        var numberQuestion = 0;
+        var score = 0;
+        var time = "off";
+        const priceAmount = ["100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
+            "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
 
-             var correct_answer = myArray2[5].slice(3, myArray2[5].length - 3);
-             var incorrect_answers = myArray2[6].slice(2, myArray2[6].length - 0);
+        // shuffle array values.
+        function shuffle(array) {
+            array.sort(() => Math.random() - 0.5);
+        }
 
-             while (incorrect_answers.indexOf('&quot') > -1) {
-                 incorrect_answers = incorrect_answers.replace("&quot;", '"');
-             }
+        // replace substring with "☼" in myArray3
+        function indicate(str) {
+            myArray3[numberQuestion] = myArray3[numberQuestion].replace(str, "☼");
+        }
 
-             while (incorrect_answers.indexOf('&#039;') > -1) {
-                 incorrect_answers = incorrect_answers.replace("&#039;", "'");
-             }
-             // define an array to the answers and push the wrong answers
-             const Aincorrect_answers = incorrect_answers.split('"');
-             const allAnswer = [];
-             var count = 0;
+        // get the next question.
+        function nextQuestion() {
+            // split a question data from api URL to attributs and init.
+            indicate("category"); indicate("type"); indicate("difficulty");
+            indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
+            const myArray2 = myArray3[numberQuestion].split("☼");
+            var category = myArray2[1].slice(2, myArray2[1].length - 2);
+            var type = myArray2[2].slice(3, myArray2[2].length - 3);
+            var difficulty = myArray2[3].slice(3, myArray2[3].length - 3);
+            var question = myArray2[4].slice(3, myArray2[4].length - 3);
+            // replace &quot with "
+            while (question.indexOf('&quot') > -1) {
+                question = question.replace("&quot;", '"');
+            }
+            // replace &#039; with '
+            while (question.indexOf('&#039;') > -1) {
+                question = question.replace("&#039;", "'");
+            }
 
-             for (var i = 0; i < Aincorrect_answers.length; i++) { // ignore openning and ending chars.
-                 if (Aincorrect_answers[i] != "," && Aincorrect_answers[i] != '"' &&
-                     Aincorrect_answers[i] != '}' && Aincorrect_answers[i] != '{' &&
-                     Aincorrect_answers[i] != ']' && Aincorrect_answers[i] != '[') {
-                     allAnswer[count] = Aincorrect_answers[i];
-                     count++;
-                 }
-             }
+            var correct_answer = myArray2[5].slice(3, myArray2[5].length - 3);
+            var incorrect_answers = myArray2[6].slice(2, myArray2[6].length - 0);
 
-             // add the correct answer to the array.
-             allAnswer[allAnswer.length] = correct_answer;
+            while (incorrect_answers.indexOf('&quot') > -1) {
+                incorrect_answers = incorrect_answers.replace("&quot;", '"');
+            }
 
-             numberQuestion++; // move to the next question.
-             openAnswers(correct_answer, allAnswer);
-             return question;
-         }
+            while (incorrect_answers.indexOf('&#039;') > -1) {
+                incorrect_answers = incorrect_answers.replace("&#039;", "'");
+            }
+            // define an array to the answers and push the wrong answers
+            const Aincorrect_answers = incorrect_answers.split('"');
+            const allAnswer = [];
+            var count = 0;
 
-         // get the optional answers and the right one and create a answers table. on click reveal the correct answer.
-         function openAnswers(correct, answers) {
-             shuffle(answers);
-             var table = document.createElement("TABLE");
-             table.setAttribute("id", "table");
-             table.style.position = "absolute";
-             table.style.right = "230px";
-             table.style.top = "220px";
-             document.body.appendChild(table);
-             // create answes table
-             for (var i = 0; i < answers.length; i++) {
-                 var row = table.insertRow(i);
-                 var cell = row.insertCell(0);
+            for (var i = 0; i < Aincorrect_answers.length; i++) { // ignore openning and ending chars.
+                if (Aincorrect_answers[i] != "," &&
+                    Aincorrect_answers[i] != '}' && Aincorrect_answers[i] != '{' &&
+                    Aincorrect_answers[i] != ']' && Aincorrect_answers[i] != '[') {
+                    allAnswer[count] = Aincorrect_answers[i];
+                    count++;
+                }
+            }
 
-                 cell.setAttribute("id", answers[i]);
-                 cell.className = "myButton"; cell.style.width = "800px"; cell.style.textAlign = "center";
-                 cell.innerHTML = answers[i];
-                
-                 cell.onclick = function () {
+            // add the correct answer to the array.
+            allAnswer[allAnswer.length] = correct_answer;
 
-                    if (this.innerHTML == correct) {
+            numberQuestion++; // move to the next question.
+            openAnswers(correct_answer, allAnswer);
+            return question;
+        }
+
+        // get the optional answers and the right one and create a answers table. on click reveal the correct answer.
+        function openAnswers(correct, answers) {
+            shuffle(answers);
+            var table = document.createElement("TABLE");
+            var clicks_counter = 0;
+            table.setAttribute("id", "table");
+            table.style.width = "700px";
+            table.style.position = "absolute";
+            table.style.right = "200px";
+            table.style.top = "200px";
+            document.body.appendChild(table);
+            // create answes table
+            for (var i = 0; i < answers.length; i++) {
+                var row = table.insertRow(i);
+                var cell = row.insertCell(0);
+
+                cell.setAttribute("id", answers[i]);
+                cell.className = "myButton"; cell.style.width = "800px"; cell.style.textAlign = "center";
+                cell.innerHTML = answers[i];
+
+                cell.onclick = function () {
+                    if (clicks_counter) {
+                        return;
+                    }
+                    clicks_counter++;
+                    var is_correct = false;
+                    if (this.innerHTML == correct ) { // for debugging
+                        is_correct = true;
                         score++; // update the score
                         document.getElementById("score").innerHTML = "score:" + score;
                     }
@@ -163,121 +208,163 @@
                     document.getElementById(correct).className = "correct_style";
                     // wait 1 second and show the next question. remove the previous answers. 
                     setTimeout(function () {
-                        openQuestion();
-                        document.getElementById("question").parentNode.removeChild(document.getElementById("question"));
-                        document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
+                        clearInterval(cancel);
+                        time = "off";
+                        if (!is_correct) {
+                            runOfTime();
+                        }
+
+                        else {
+                            document.getElementById("text").style.visibility = "visible";
+                            document.getElementById("text").innerHTML = "Round " + numberQuestion +
+                                " is complete </br> you earn " + priceAmount[numberQuestion - 1] + " $";
+                            if (numberQuestion == "16") {
+                                alert(ניצחת);
+                                document.getElementById("start").value = "Start";
+                                runOfTime()
+                            }
+                            else
+                            {
+                                document.getElementById("start").value = "Next Round";
+                            }
+                           
+                            document.getElementById("start").style.visibility = "visible";
+                            document.getElementById("timer").style.visibility = "hidden";
+                            document.getElementById("question").style.visibility = "hidden";
+                            document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
+                            
+                        }
                     }, 1000);
-                 }
-             }
-         }
+                }
+            }
+        }
 
-         // get the data from the api and put the questions values on an array.
-         function onLoad() {
-             var str = "https://opentdb.com/api.php?amount=100";
-             const fetchData2 = str;
+        // get the data from the api and put the questions values on an array.
+        function onLoad() {
+            var str = "https://opentdb.com/api.php?amount=100";
+            const fetchData2 = str;
 
-             fetch(fetchData2)
-                 .then((resp) => resp.json())
-                 .then(function (data) {
-                     let authors = data;
-                     const myArray = JSON.stringify(authors).split("}");
-                     myArray[0] = myArray[0].slice(30, myArray[0].length);
-                     myArray[0] = "," + myArray[0];
-                     for (i = 0; i < myArray.length; i++) {
-                         myArray3[i] = myArray[i];
-                     }
-                 })
-         }
+            fetch(fetchData2)
+                .then((resp) => resp.json())
+                .then(function (data) {
+                    let authors = data;
+                    const myArray = JSON.stringify(authors).split("}");
+                    myArray[0] = myArray[0].slice(30, myArray[0].length);
+                    myArray[0] = "," + myArray[0];
+                    for (i = 0; i < myArray.length; i++) {
+                        myArray3[i] = myArray[i];
+                    }
+                })
+        }
 
-         // show a question on the screen.
-         function openQuestion() {
-             var stringQustion = nextQuestion();
-             var question = document.createElement("H1");
-             question.setAttribute("id", "question");
-             question.innerHTML = stringQustion;
-             question.style.marginLeft = "auto";
-             question.style.marginRight = "auto";
-             question.style.marginTop = "100px";
-             question.style.width = "26em";
-             document.body.appendChild(question);
-         }
+        // show a question on the screen.
+        function openQuestion() {
+            document.getElementById("question").style.visibility = "visible";
+            document.getElementById("text").style.visibility = "hidden";
+            var stringQuestion = nextQuestion();
+            question.innerHTML = stringQuestion;
 
-         function runOfTime() {
-             document.getElementById("congrat").style.visibility = "visible";
-             document.getElementById("congrat").innerHTML = "good job, you reward " + score + " answers";
-             score = 0; // init score for the next round. 
-             document.getElementById("score").style.visibility = "hidden";
-             document.getElementById("question").parentNode.removeChild(document.getElementById("question"));
-             document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
-             document.getElementById("timer").style.visibility = "hidden";
-             document.getElementById("start").value = "play again";
-             document.getElementById("start").style.visibility = "visible";
-             time = "off";
-         }
+        }
 
-         // limit time to the round
-         function timer(Minutes, Seconds) {
-             document.getElementById("start").style.visibility = "hidden";
-             document.getElementById("score").innerHTML = "score:" + score;
-             document.getElementById("score").style.visibility = "visible";
-             document.getElementById("congrat").style.visibility = "hidden";
-             if (time == "off") {
-                 time = "on";
-                 var seconds = Seconds;
-                 var minutes = Minutes;
-                 var timer = document.getElementById("timer");
-                 timer.style.visibility = "visible";
-                 timer.innerHTML = is_one_digit(minutes) + ":" + is_one_digit(seconds);
-                 var cancel = setInterval(decrementSeconds, 1000);
-                 function decrementSeconds() {
-                     if (seconds == 0 && minutes > 0) {
-                         seconds = 60;
-                         minutes -= 1;
-                     }
+        function runOfTime() {
+            document.getElementById("congrat").style.visibility = "visible";
+            document.getElementById("congrat").innerHTML = "good job, you reward " + score + " answers";
+            score = 0; // init score for the next round. 
+            document.getElementById("score").style.visibility = "hidden";
+            document.getElementById("question").style.visibility = "hidden";
+            document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
+            document.getElementById("timer").style.visibility = "hidden";
+            document.getElementById("start").value = "play again";
+            document.getElementById("start").style.visibility = "visible";
+            time = "off";
+            onLoad();
+            numberQuestion = 0;
+        }
 
-                     else if (seconds > 1 || seconds > 0 && minutes > 0) {
-                         seconds -= 1;
-                     }
+        // limit time to the round
+        var cancel;
+        function timer(Minutes, Seconds) {
+            document.getElementById("start").style.visibility = "hidden";
+            document.getElementById("score").innerHTML = "score:" + score;
+            document.getElementById("score").style.visibility = "visible";
+            document.getElementById("congrat").style.visibility = "hidden";
+            if (time == "off") {
+                time = "on";
+                var seconds = Seconds;
+                var minutes = Minutes;
+                var timer = document.getElementById("timer");
+                timer.style.visibility = "visible";
+                timer.innerHTML = is_one_digit(minutes) + ":" + is_one_digit(seconds);
+                cancel = setInterval(decrementSeconds, 1000);
+                function decrementSeconds() {
+                    if (seconds == 0 && minutes > 0) {
+                        seconds = 59;
+                        minutes -= 1;
+                    }
 
-                     else if (seconds == 1 && minutes == 0) {
+                    else if (seconds > 1 || seconds > 0 && minutes > 0) {
+                        seconds -= 1;
+                    }
+
+                    else if (seconds == 1 && minutes == 0) {
                         timer.innerHTML = "";
-                         runOfTime();
-                         clearInterval(cancel);
-                     }
-                    
-                     timer.innerHTML = is_one_digit(minutes) + ":" + is_one_digit(seconds);
-                     document.body.appendChild(timer);
-                 }
-             }
-         }
+                        runOfTime();
+                        clearInterval(cancel);
+                    }
 
-         // add "0" before number when its less than 10.
-         function is_one_digit(number) {
-             if (number < 10)
-                 return "0" + number;
-             else
-                 return number;
-         }
+                    timer.innerHTML = is_one_digit(minutes) + ":" + is_one_digit(seconds);
+                    document.body.appendChild(timer);
+                }
+            }
+        }
 
-     </script>
+        // add "0" before number when its less than 10.
+        function is_one_digit(number) {
+            if (number < 10)
+                return "0" + number;
+            else
+                return number;
+        }
+
+    </script>
 </head>
-    
+
 
 <body onload="onLoad()">
     <form id="form1">
-        <div>
-            <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(0,10)" 
-                style="position: absolute; top: 40px; right: 510px; width:300px;border-color:black" />
 
-              <p id="timer" style="position: absolute; top: 40px; right: 210px;
-                               width: 300px;border-color:black;font-size:24px"></p>
+        <body style="background-position-x: center; background-position-y: top; background-size: 1280px;
+        background-repeat: no-repeat; background-image:
+        url(https://www.microids.com/wp-content/uploads/2020/10/WhoWantsToBeAMillionaire_keyart.jpg);"
+            onload="onLoad()">
+            <div id="form1">
+                <p id="text" class="text" style="font-size: 22px; width: 500px;
+                     position:absolute; top: 40px; right: 31%;">
+                    Welcome to who wants to be a millioner.<br />
+                    In this game you can earn a Million dollar. <br />
+                    There are 15 rounds with varying difficulty levels.<br />
+                    In each round the winning amount increases.<br />
+                    You can use the extra time butten only once.<br />
+                    One mistake and you're out! <br />
+                    GOOD LUCK </p>
+                <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(0,10)"
+                    style="width:300px;border-color:black; position:absolute; top: 350px; right: 40%;" />
+                <div class="text" style="visibility: hidden;">
+                    <h2 id="question"
+                        style="width:auto;background-color:beige;  border: 4px solid black; font-size:24px"></h2>
+                    <p id="timer" style="width:auto;border-color:black;font-size:24px;
+                    position: absolute;right:0px;top: 35px;background-color:beige;  border: 4px solid black"></p>
 
-              <p id="score" style="position: absolute; top: 40px; right: 310px;
-                               width:300px;border-color:black;font-size:24px"></p>
+                    <p id="score"
+                        style=" width:auto;border-color:black;
+                    font-size:24px;position: absolute;right: 0%;top: 0%;background-color:beige;  border: 4px solid black"></p>
 
-              <h1 id="congrat" style="position: absolute; top: 100px; right: 310px;
-                               width:700px;border-color:black;font-size:40px"></h1>
-        </div>
+                    <h3 id="congrat"
+                        style="width:auto;border-color:black;font-size:40px;background-color:beige;  border: 4px solid black">
+                    </h3>
+                </div>
+            </div>
     </form>
 </body>
+
 </html>
