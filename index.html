@@ -85,7 +85,8 @@
         }
 
         .myButton:hover {
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ccc2a6), color-stop(1, #eae0c2));
+            background: -webkit-gradient(linear, left top, left bottom,
+                    color-stop(0.05, #ccc2a6), color-stop(1, #eae0c2));
             background: -moz-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
             background: -webkit-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
             background: -o-linear-gradient(top, #ccc2a6 5%, #eae0c2 100%);
@@ -107,7 +108,6 @@
     <script type="text/javascript">
         const myArray3 = [];
         var round = 0;
-        //var score = 0;
         var time = "off";
         const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
             "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
@@ -192,21 +192,21 @@
             var clicks_counter = 0;
 
             table.setAttribute("id", "table");
-            table.style.width = "700px"; table.style.position = "absolute";
-            table.style.right = "300px"; table.style.top = "120px";
+            table.style.width = "600px"; table.style.position = "absolute";
+            table.style.right = "350px"; table.style.top = "120px";
             document.body.appendChild(table);
-            
+
             // create answes table
             for (var i = 0; i < answers.length + 1; i++) {
                 var row = table.insertRow(0);
                 var cell = row.insertCell(0);
                 cell.setAttribute("id", answers[i]);
-                cell.style.width = "700px"; cell.style.textAlign = "center";
+                cell.style.width = "600px"; cell.style.textAlign = "center";
                 if (i == answers.length) {
                     cell.innerHTML = question;
                     cell.className = "text"; cell.style.backgroundColor = "black"; cell.style.color = "white";
                     cell.style.opacity = "100%";
-                    continue;   
+                    continue;
                 }
                 cell.className = "myButton";
                 cell.innerHTML = answers[i];
@@ -221,7 +221,7 @@
                     var is_correct = false;
                     if (this.innerHTML == correct) {
                         is_correct = true;
-                        document.getElementById("score").innerHTML = "Round:" + round;
+                        document.getElementById("round").innerHTML = "Round:" + round;
                     }
 
                     document.getElementById(correct).className = "correct_style"; // change to green
@@ -245,7 +245,8 @@
                                     " is complete <br> you earn " + priceAmount[round] + " $";
 
                                 if (round == 14) {
-                                    document.getElementById("text").innerHTML += "<br> OMG! Next round is the one million $ question!!!";
+                                    document.getElementById("text").innerHTML +=
+                                        "<br> OMG! Next round is the one million $ question!!!";
                                 }
                             }
                             showElements("text", "start");
@@ -298,7 +299,7 @@
             document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
             document.getElementById("start").value = "play again";
             showElements("text", "start");
-            hideElements("score", "timer");
+            hideElements("round", "timer");
             time = "off";
             onLoad();
             round = 0;
@@ -306,15 +307,13 @@
 
         // limit time to the round
         var cancel;
-        function timer(Minutes, Seconds) {
+        function timer(minutes, seconds) {
             hideElements("start");
-            document.getElementById("score").innerHTML = "Round:" + round;
-            showElements("score");
+            document.getElementById("round").innerHTML = "Round:" + round;
+            showElements("round");
 
             if (time == "off") {
                 time = "on";
-                var seconds = Seconds;
-                var minutes = Minutes;
                 var timer = document.getElementById("timer");
                 showElements("timer");
                 timer.innerHTML = is_one_digit(minutes) + ":" + is_one_digit(seconds);
@@ -375,7 +374,7 @@
             <div id="form1">
 
                 <ol reversed id="amountList" class="text" style="background-color:rgb(134, 105, 143) ;position:absolute;
-                 top: 60px; right: 0%;width:150px;margin: 0;padding:0 1.5em 0 1.5em;color:black;">
+                 top: 60px; right: 0%;width:150px;margin: 0; padding:0 1.5em 0 1.7em; color:black">
 
                 </ol>
 
@@ -390,17 +389,19 @@
                     GOOD LUCK
                 </p>
 
-                <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(0,10)"
+                <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(1,10)"
                     style="width:300px;border-color:black; position:absolute; top: 350px; right: 40%;" />
 
-                <div class="text" style="visibility: hidden;">
-                    <p id="timer" style="width:auto;border-color:black;font-size:24px;
-                        position: absolute;right:0px;top: 35px;background-color:beige;  border: 4px solid black">
+                <div class="text" style="visibility: hidden">
+
+                    <p id="timer"
+                        style="width: 100px; border-color: black; background-color: beige; color: red; border-radius: 10px;
+                       font-size:24px; text-align: center; position: absolute; right: 880px;top: 60px; border: 4px solid black">
                     </p>
 
-                    <p id="score"
-                        style=" width:auto;border-color:black; color: beige; width: 220px;
-                       font-size:24px;position: absolute;right: 0%;top: 0%;background-color:rgb(134, 105, 143);  border: 4px solid black">
+                    <p id="round" style=" width:auto;border-color:black; color: beige; width: 220px; border-radius: 10px;
+                       font-size:24px;position: absolute;right: 0%;top: 0%;background-color:rgb(134, 105, 143); 
+                       border: 4px solid black">
                     </p>
                 </div>
             </div>
