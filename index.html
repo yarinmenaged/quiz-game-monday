@@ -106,11 +106,24 @@
 
     <script type="text/javascript">
         const myArray3 = [];
-        var numberQuestion = 0;
-        var score = 0;
+        var round = 0;
+        //var score = 0;
         var time = "off";
-        const priceAmount = ["100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
+        const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
             "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
+
+        function hideElements() {
+
+            for (var i = 0; i < arguments.length; i++) {
+                document.getElementById(arguments[i]).style.visibility = "hidden";
+            }
+        }
+
+        function showElements() {
+            for (var i = 0; i < arguments.length; i++) {
+                document.getElementById(arguments[i]).style.visibility = "visible";
+            }
+        }
 
         // shuffle array values.
         function shuffle(array) {
@@ -119,7 +132,7 @@
 
         // replace substring with "☼" in myArray3
         function indicate(str) {
-            myArray3[numberQuestion] = myArray3[numberQuestion].replace(str, "☼");
+            myArray3[round] = myArray3[round].replace(str, "☼");
         }
 
         // get the next question.
@@ -127,7 +140,7 @@
             // split a question data from api URL to attributs and init.
             indicate("category"); indicate("type"); indicate("difficulty");
             indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
-            const myArray2 = myArray3[numberQuestion].split("☼");
+            const myArray2 = myArray3[round].split("☼");
             var category = myArray2[1].slice(2, myArray2[1].length - 2);
             var type = myArray2[2].slice(3, myArray2[2].length - 3);
             var difficulty = myArray2[3].slice(3, myArray2[3].length - 3);
@@ -159,80 +172,85 @@
             for (var i = 0; i < Aincorrect_answers.length; i++) { // ignore openning and ending chars.
                 if (Aincorrect_answers[i] != "," &&
                     Aincorrect_answers[i] != '}' && Aincorrect_answers[i] != '{' &&
-                    Aincorrect_answers[i] != ']' && Aincorrect_answers[i] != '[') {
+                    Aincorrect_answers[i] != ']' && Aincorrect_answers[i] != '[' && Aincorrect_answers[i] != null) {
                     allAnswer[count] = Aincorrect_answers[i];
                     count++;
                 }
             }
 
             // add the correct answer to the array.
-            allAnswer[allAnswer.length] = correct_answer;
+            allAnswer[allAnswer.length] = correct_answer + "1";
 
-            numberQuestion++; // move to the next question.
-            openAnswers(correct_answer, allAnswer);
-            return question;
+            round++; // move to the next question.
+            openAnswers(correct_answer + "1", allAnswer, question);
         }
 
         // get the optional answers and the right one and create a answers table. on click reveal the correct answer.
-        function openAnswers(correct, answers) {
+        function openAnswers(correct, answers, question) {
             shuffle(answers);
             var table = document.createElement("TABLE");
             var clicks_counter = 0;
-            table.setAttribute("id", "table");
-            table.style.width = "700px";
-            table.style.position = "absolute";
-            table.style.right = "200px";
-            table.style.top = "200px";
-            document.body.appendChild(table);
-            // create answes table
-            for (var i = 0; i < answers.length; i++) {
-                var row = table.insertRow(i);
-                var cell = row.insertCell(0);
 
+            table.setAttribute("id", "table");
+            table.style.width = "700px"; table.style.position = "absolute";
+            table.style.right = "300px"; table.style.top = "120px";
+            document.body.appendChild(table);
+            
+            // create answes table
+            for (var i = 0; i < answers.length + 1; i++) {
+                var row = table.insertRow(0);
+                var cell = row.insertCell(0);
                 cell.setAttribute("id", answers[i]);
-                cell.className = "myButton"; cell.style.width = "800px"; cell.style.textAlign = "center";
+                cell.style.width = "700px"; cell.style.textAlign = "center";
+                if (i == answers.length) {
+                    cell.innerHTML = question;
+                    cell.className = "text"; cell.style.backgroundColor = "black"; cell.style.color = "white";
+                    cell.style.opacity = "100%";
+                    continue;   
+                }
+                cell.className = "myButton";
                 cell.innerHTML = answers[i];
 
                 cell.onclick = function () {
                     if (clicks_counter) {
                         return;
                     }
+
                     clicks_counter++;
+
                     var is_correct = false;
-                    if (this.innerHTML == correct ) { // for debugging
+                    if (this.innerHTML == correct) {
                         is_correct = true;
-                        score++; // update the score
-                        document.getElementById("score").innerHTML = "score:" + score;
+                        document.getElementById("score").innerHTML = "Round:" + round;
                     }
 
-                    document.getElementById(correct).className = "correct_style";
+                    document.getElementById(correct).className = "correct_style"; // change to green
+
                     // wait 1 second and show the next question. remove the previous answers. 
                     setTimeout(function () {
                         clearInterval(cancel);
                         time = "off";
                         if (!is_correct) {
-                            runOfTime();
+                            endOfGame();
                         }
-
                         else {
-                            document.getElementById("text").style.visibility = "visible";
-                            document.getElementById("text").innerHTML = "Round " + numberQuestion +
-                                " is complete </br> you earn " + priceAmount[numberQuestion - 1] + " $";
-                            if (numberQuestion == "16") {
-                                alert(ניצחת);
+                            if (round == 15) {
                                 document.getElementById("start").value = "Start";
-                                runOfTime()
+                                document.getElementById("text").innerHTML = "you win the big prize";
+                                endOfGame()
                             }
-                            else
-                            {
+                            else {
                                 document.getElementById("start").value = "Next Round";
+                                document.getElementById("text").innerHTML = "Round " + round +
+                                    " is complete <br> you earn " + priceAmount[round] + " $";
+
+                                if (round == 14) {
+                                    document.getElementById("text").innerHTML += "<br> OMG! Next round is the one million $ question!!!";
+                                }
                             }
-                           
-                            document.getElementById("start").style.visibility = "visible";
-                            document.getElementById("timer").style.visibility = "hidden";
-                            document.getElementById("question").style.visibility = "hidden";
+                            showElements("text", "start");
+                            hideElements("timer");
                             document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
-                            
                         }
                     }, 1000);
                 }
@@ -241,6 +259,7 @@
 
         // get the data from the api and put the questions values on an array.
         function onLoad() {
+
             var str = "https://opentdb.com/api.php?amount=100";
             const fetchData2 = str;
 
@@ -259,41 +278,45 @@
 
         // show a question on the screen.
         function openQuestion() {
-            document.getElementById("question").style.visibility = "visible";
-            document.getElementById("text").style.visibility = "hidden";
-            var stringQuestion = nextQuestion();
-            question.innerHTML = stringQuestion;
+            hideElements("text");
+            nextQuestion();
+            document.getElementById("line" + round).style.backgroundColor = "orange";
 
         }
 
-        function runOfTime() {
-            document.getElementById("congrat").style.visibility = "visible";
-            document.getElementById("congrat").innerHTML = "good job, you reward " + score + " answers";
-            score = 0; // init score for the next round. 
-            document.getElementById("score").style.visibility = "hidden";
-            document.getElementById("question").style.visibility = "hidden";
+        function cleanAmountList() {
+            for (var i = 1; i < priceAmount.length; i++) {
+                document.getElementById("line" + i).style.backgroundColor = "rgb(134, 105, 143)";
+            }
+        }
+
+        function endOfGame() {
+            round = round - (round % 5);
+            document.getElementById("text").innerHTML = "your prize " + priceAmount[round] + " $";
+            round = 0; // init round for the next game. 
+            cleanAmountList();
             document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
-            document.getElementById("timer").style.visibility = "hidden";
             document.getElementById("start").value = "play again";
-            document.getElementById("start").style.visibility = "visible";
+            showElements("text", "start");
+            hideElements("score", "timer");
             time = "off";
             onLoad();
-            numberQuestion = 0;
+            round = 0;
         }
 
         // limit time to the round
         var cancel;
         function timer(Minutes, Seconds) {
-            document.getElementById("start").style.visibility = "hidden";
-            document.getElementById("score").innerHTML = "score:" + score;
-            document.getElementById("score").style.visibility = "visible";
-            document.getElementById("congrat").style.visibility = "hidden";
+            hideElements("start");
+            document.getElementById("score").innerHTML = "Round:" + round;
+            showElements("score");
+
             if (time == "off") {
                 time = "on";
                 var seconds = Seconds;
                 var minutes = Minutes;
                 var timer = document.getElementById("timer");
-                timer.style.visibility = "visible";
+                showElements("timer");
                 timer.innerHTML = is_one_digit(minutes) + ":" + is_one_digit(seconds);
                 cancel = setInterval(decrementSeconds, 1000);
                 function decrementSeconds() {
@@ -308,7 +331,7 @@
 
                     else if (seconds == 1 && minutes == 0) {
                         timer.innerHTML = "";
-                        runOfTime();
+                        endOfGame();
                         clearInterval(cancel);
                     }
 
@@ -326,11 +349,23 @@
                 return number;
         }
 
+        // push the price amounts to the list element 
+        function setPriceValues() {
+            for (var i = priceAmount.length - 1; i > 0; i--) {
+                var row = document.createElement("li");
+                row.appendChild(document.createTextNode(priceAmount[i] + "$"));
+                document.getElementById("amountList").appendChild(row);
+                row.setAttribute("id", "line" + i);
+                if (i % 5 == 0) {
+                    row.style.color = "beige";
+                }
+            }
+        }
     </script>
 </head>
 
 
-<body onload="onLoad()">
+<body onload="onLoad()+setPriceValues()">
     <form id="form1">
 
         <body style="background-position-x: center; background-position-y: top; background-size: 1280px;
@@ -338,6 +373,12 @@
         url(https://www.microids.com/wp-content/uploads/2020/10/WhoWantsToBeAMillionaire_keyart.jpg);"
             onload="onLoad()">
             <div id="form1">
+
+                <ol reversed id="amountList" class="text" style="background-color:rgb(134, 105, 143) ;position:absolute;
+                 top: 60px; right: 0%;width:150px;margin: 0;padding:0 1.5em 0 1.5em;color:black;">
+
+                </ol>
+
                 <p id="text" class="text" style="font-size: 22px; width: 500px;
                      position:absolute; top: 40px; right: 31%;">
                     Welcome to who wants to be a millioner.<br />
@@ -346,22 +387,21 @@
                     In each round the winning amount increases.<br />
                     You can use the extra time butten only once.<br />
                     One mistake and you're out! <br />
-                    GOOD LUCK </p>
+                    GOOD LUCK
+                </p>
+
                 <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(0,10)"
                     style="width:300px;border-color:black; position:absolute; top: 350px; right: 40%;" />
+
                 <div class="text" style="visibility: hidden;">
-                    <h2 id="question"
-                        style="width:auto;background-color:beige;  border: 4px solid black; font-size:24px"></h2>
                     <p id="timer" style="width:auto;border-color:black;font-size:24px;
-                    position: absolute;right:0px;top: 35px;background-color:beige;  border: 4px solid black"></p>
+                        position: absolute;right:0px;top: 35px;background-color:beige;  border: 4px solid black">
+                    </p>
 
                     <p id="score"
-                        style=" width:auto;border-color:black;
-                    font-size:24px;position: absolute;right: 0%;top: 0%;background-color:beige;  border: 4px solid black"></p>
-
-                    <h3 id="congrat"
-                        style="width:auto;border-color:black;font-size:40px;background-color:beige;  border: 4px solid black">
-                    </h3>
+                        style=" width:auto;border-color:black; color: beige; width: 220px;
+                       font-size:24px;position: absolute;right: 0%;top: 0%;background-color:rgb(134, 105, 143);  border: 4px solid black">
+                    </p>
                 </div>
             </div>
     </form>
