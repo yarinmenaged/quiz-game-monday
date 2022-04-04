@@ -176,10 +176,11 @@
             }
 
             // add the correct answer to the array.
-            allAnswer[allAnswer.length] = correct_answer + "1";
+            allAnswer[allAnswer.length] = correct_answer;
+            shuffle(allAnswer);
 
             round++; // move to the next question.
-            openAnswers(correct_answer + "1", allAnswer, question, false);
+            openAnswers(correct_answer, allAnswer, question, false);
         }
 
         function checkAnswer(clicks_counter, correctAnswer, clickValue) {
@@ -187,7 +188,6 @@
                 return;
             }
             clicks_counter++;
-
             var is_correct = false;
             if (clickValue == correctAnswer) {
                 is_correct = true;
@@ -224,6 +224,13 @@
             }, 1000);
         }
 
+
+
+        // shuffle array values.
+        function shuffle(array) {
+            array.sort(() => Math.random() - 0.5);
+        }
+
         // get the optional answers and the right one and create a answers table. on click reveal the correct answer.
         function openAnswers(correctAnswer, answers, question, isFifty) {
             var table = document.createElement("TABLE");
@@ -235,7 +242,15 @@
 
             var ansNum = answers.length;
             if (isFifty) {
-                ansNum = ansNum / 2;
+                var randomNumber = Math.floor(Math.random() * 4);
+                while (answers[randomNumber] == correctAnswer) {
+                    randomNumber = Math.floor(Math.random() * 4);
+                }
+                for (var i = 0; i < answers.length; i++) {
+                    if (answers[i] != correctAnswer && i != randomNumber) {
+                        answers[i] = "-";
+                    }
+                }
             }
             // create answes table
             for (var i = 0; i < ansNum + 1; i++) {
@@ -249,17 +264,14 @@
                     cell.style.opacity = "100%";
                     continue;
                 }
+                cell.innerHTML = answers[i];
+                if (answers[i] == "-") {
+                    cell.className = "text";
+                    continue;
+                }
                 cell.className = "myButton";
 
-                if (isFifty) {
-                    cell.innerHTML = correctAnswer;
-                }
-                else {
-                    cell.innerHTML = answers[i];
-                }
-
                 cell.onclick = function () {
-                    alert("click");
                     checkAnswer(clicks_counter, correctAnswer, this.innerHTML);
                 }
             }
@@ -301,7 +313,10 @@
             if (round % 5 == 0) round--;
             round = round - (round % 5);
             document.getElementById("text").innerHTML = "your prize " + priceAmount[round] + " $";
-            round = 0; // init round for the next game. 
+            round = 0; // init round for the next game.
+            //init fifty Help
+            boolFiftyClick = false;
+            document.getElementById("50/50").src = "https://static.wikia.nocookie.net/millionaire/images/7/73/Classic5050.png/revision/latest/scale-to-width-down/343?cb=20160407180209";
             cleanAmountList();
             document.getElementById("table").remove();
             document.getElementById("start").value = "play again";
@@ -310,6 +325,7 @@
             time = "off";
             onLoad();
             round = 0;
+
         }
 
         // limit time to the round
@@ -368,9 +384,15 @@
             }
         }
 
+        //init fifty Help
+        var boolFiftyClick = false;
         function fiftyFifty() {
+            if (boolFiftyClick) { return };
+            if ( allAnswer.length<4) { alert("in this question you can't use 50/50 help");return};
+            boolFiftyClick = true;
             document.getElementById("table").remove();
             openAnswers(correct_answer, allAnswer, question, true);
+            document.getElementById("50/50").src = "https://static.wikia.nocookie.net/millionaire/images/1/1e/Classic5050used.png/revision/latest/scale-to-width-down/250?cb=20160407180240";
         }
 
     </script>
