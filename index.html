@@ -220,6 +220,7 @@
                     showElements("text", "start");
                     hideElements("timer", "50/50", "extraTime");
                     if (extraTime) { hideElements("onExtraTime") };
+                    if (boolFiftyClick) { hideElements("on50/50") };
                     document.getElementById("table").remove();
                 }
             }, 1000);
@@ -318,13 +319,11 @@
             //init fifty Help
             boolFiftyClick = false;
             extraTime = false;
-            hideElements("onExtraTime")
-            document.getElementById("50/50").src = "https://static.wikia.nocookie.net/millionaire/images/7/73/Classic5050.png/revision/latest/scale-to-width-down/343?cb=20160407180209";
             cleanAmountList();
             document.getElementById("table").remove();
             document.getElementById("start").value = "play again";
             showElements("text", "start");
-            hideElements("round", "timer", "50/50", "extraTime");
+            hideElements("round", "timer", "50/50", "extraTime","onExtraTime", "on50/50");
             time = "off";
             onLoad();
             round = 0;
@@ -338,7 +337,7 @@
             document.getElementById("round").innerHTML = "Round:" + round;
             showElements("round", "50/50", "extraTime");
             if (extraTime) { showElements("onExtraTime") };
-
+            if (boolFiftyClick) { showElements("on50/50") };
             if (time == "off") {
                 time = "on";
                 var timer = document.getElementById("timer");
@@ -397,7 +396,7 @@
             boolFiftyClick = true;
             document.getElementById("table").remove();
             openAnswers(correct_answer, allAnswer, question, true);
-            document.getElementById("50/50").src = "https://static.wikia.nocookie.net/millionaire/images/1/1e/Classic5050used.png/revision/latest/scale-to-width-down/250?cb=20160407180240";
+            showElements("on50/50");
         }
         //init global extraTime Help
         var extraTime = false;
@@ -444,9 +443,12 @@
                     src="http://vignette3.wikia.nocookie.net/millionaire/images/7/7e/5050.png/revision/latest?cb=20160801084559"
                     width="80" , height="60" style=" cursor: pointer; position: absolute;
                      top: 60px; right: 270px; visibility: hidden" onclick="fiftyFifty()"></img>
-
-                <img id="extraTime" src="https://cdn-icons-png.flaticon.com/512/16/16455.png" width="70" , height="60"
-                    style=" cursor: pointer; position: absolute;
+                <img id="on50/50"
+                    src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
+                    width="80" , height="60" style=" cursor: pointer; position: absolute;
+                   top: 60px; right: 270px; visibility: hidden"></img>
+                <img id="extraTime" src="https://ccinfo.unc.edu/wp-content/uploads/sites/219/2018/02/clock.png"
+                    width="70" , height="60" style=" cursor: pointer; position: absolute;
                      top: 60px; right: 370px; visibility: hidden" onclick="extraTimeHelp()"></img>
                 <img id="onExtraTime" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
                     width="70" , height="60" style=" cursor: pointer; position: absolute;
