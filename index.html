@@ -58,6 +58,7 @@
             padding: 12px 16px;
             text-align: center;
             opacity: 90%;
+            display: inline-block;
         }
 
         .myButton {
@@ -78,7 +79,6 @@
             padding: 12px 16px;
             text-decoration: none;
             text-shadow: 0px 1px 0px #1c1b18;
-            width: 100%;
             text-align: center;
             opacity: 85%;
         }
@@ -98,7 +98,7 @@
             z-index: 1;
             display: inline-block;
             margin: 1em;
-            max-width: 350px;
+            max-width: 20%;
             width: calc(100% - 2em);
             vertical-align: top;
         }
@@ -236,8 +236,8 @@
             var table = document.createElement("TABLE");
             var clicks_counter = 0;
             table.setAttribute("id", "table");
-            table.style.width = "600px"; table.style.position = "absolute";
-            table.style.right = "270px"; table.style.top = "120px";
+            table.style.width = "50%"; table.style.position = "absolute";
+            table.style.right = "30%"; table.style.top = "8%";
             document.body.appendChild(table);
 
             var ansNum = answers.length;
@@ -257,7 +257,7 @@
                 var row = table.insertRow(0);
                 var cell = row.insertCell(0);
                 cell.setAttribute("id", answers[i]);
-                cell.style.width = "600px"; cell.style.textAlign = "center";
+                cell.style.textAlign = "center";
                 if (i == ansNum) {
                     cell.innerHTML = question;
                     cell.className = "text"; cell.style.backgroundColor = "black"; cell.style.color = "orange";
@@ -384,11 +384,12 @@
             }
         }
 
-        //init fifty Help
+        //init global fifty Help
         var boolFiftyClick = false;
         function fiftyFifty() {
             if (boolFiftyClick) { return };
-            if ( allAnswer.length<4) { alert("in this question you can't use 50/50 help");return};
+            //check if the question have less 4 answers
+            if (allAnswer.length<4) { alert("in this question you can't use 50/50 help");return};
             boolFiftyClick = true;
             document.getElementById("table").remove();
             openAnswers(correct_answer, allAnswer, question, true);
@@ -409,12 +410,12 @@
             <div id="form1">
 
                 <ol reversed id="amountList" class="text" style="background-color:black ;
-                position:absolute; top: 60px; right: 0%;width:150px;
+                position:absolute; top: 5%; right: 0%;width:13%;
                 margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
                 </ol>
 
-                <p id="text" class="text" style="font-size: 22px; width: 500px;
-                     position:absolute; top: 40px; right: 31%;">
+                <p id="text" class="text" style="font-size: 22px; width: 40%;
+                     position:absolute; top: 5%; right: 31%;">
                     Welcome to who wants to be a millioner.<br />
                     In this game you can earn a Million dollar. <br />
                     There are 15 rounds with varying difficulty levels.<br />
@@ -426,20 +427,20 @@
 
                 <img id="50/50"
                     src="https://static.wikia.nocookie.net/millionaire/images/7/73/Classic5050.png/revision/latest/scale-to-width-down/343?cb=20160407180209"
-                    width="100" , height="60" style=" cursor: pointer; position: absolute;
-                     top: 60px; right: 650px; visibility: hidden" onclick="fiftyFifty()"></img>
+                    width="7%" , height="7%" style=" cursor: pointer; position: absolute;
+                     top: 4%; right: 60%; visibility: hidden" onclick="fiftyFifty()"></img>
 
                 <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(1,30)"
-                    style="width:300px; position:absolute; top: 350px; right: 42%" />
+                    style="width:30%; position:absolute; top: 40%; right: 42%" />
 
                 <div class="text" style="visibility: hidden">
 
                     <p id="timer"
-                        style="width: 100px; background-color: black; color: red; border-radius: 10px;
-                       font-size:24px; text-align: center; position: absolute; right: 800px; top: 60px; border: 4px solid blue">
+                        style="width: 10%; background-color: black; color: red; border-radius: 10px;
+                       font-size:24px; text-align: center; position: absolute; right: 70%; top: 5%; border: 4px solid blue">
                     </p>
 
-                    <p id="round" style=" width:auto;border-color:black; color: white; width: 220px; border-radius: 10px;
+                    <p id="round" style=" width:auto;border-color:black; color: white; width: 12%; border-radius: 10px;
                        font-size:24px;position: absolute;right: 0%;top: 0%;background-color: black; 
                        border: 4px solid blue">
                     </p>
