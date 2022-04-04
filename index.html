@@ -106,6 +106,9 @@
 
     <script type="text/javascript">
         const myArray3 = [];
+        var correct_answer = "";
+        var question = "";
+        var allAnswer = [];
         var round = 0;
         var time = "off";
         const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
@@ -124,11 +127,6 @@
             }
         }
 
-        // shuffle array values.
-        function shuffle(array) {
-            array.sort(() => Math.random() - 0.5);
-        }
-
         // replace substring with "☼" in myArray3
         function indicate(str) {
             myArray3[round] = myArray3[round].replace(str, "☼");
@@ -143,7 +141,8 @@
             var category = myArray2[1].slice(2, myArray2[1].length - 2);
             var type = myArray2[2].slice(3, myArray2[2].length - 3);
             var difficulty = myArray2[3].slice(3, myArray2[3].length - 3);
-            var question = myArray2[4].slice(3, myArray2[4].length - 3);
+            question = myArray2[4].slice(3, myArray2[4].length - 3);
+            allAnswer = [];
             // replace &quot with "
             while (question.indexOf('&quot') > -1) {
                 question = question.replace("&quot;", '"');
@@ -153,7 +152,7 @@
                 question = question.replace("&#039;", "'");
             }
 
-            var correct_answer = myArray2[5].slice(3, myArray2[5].length - 3);
+            correct_answer = myArray2[5].slice(3, myArray2[5].length - 3);
             var incorrect_answers = myArray2[6].slice(2, myArray2[6].length - 0);
 
             while (incorrect_answers.indexOf('&quot') > -1) {
@@ -165,7 +164,6 @@
             }
             // define an array to the answers and push the wrong answers
             const Aincorrect_answers = incorrect_answers.split('"');
-            const allAnswer = [];
             var count = 0;
 
             for (var i = 0; i < Aincorrect_answers.length; i++) { // ignore openning and ending chars.
@@ -181,78 +179,88 @@
             allAnswer[allAnswer.length] = correct_answer + "1";
 
             round++; // move to the next question.
-            openAnswers(correct_answer + "1", allAnswer, question);
+            openAnswers(correct_answer + "1", allAnswer, question, false);
+        }
+
+        function checkAnswer(clicks_counter, correctAnswer, clickValue) {
+            if (clicks_counter) {
+                return;
+            }
+            clicks_counter++;
+
+            var is_correct = false;
+            if (clickValue == correctAnswer) {
+                is_correct = true;
+                document.getElementById("round").innerHTML = "Round:" + round;
+            }
+            document.getElementById(correctAnswer).className = "correct_style";
+
+            setTimeout(function () {
+                clearInterval(cancel);
+                time = "off";
+                if (!is_correct) {
+                    endOfGame();
+                }
+                else {
+                    if (round == 15) {
+                        document.getElementById("start").value = "Start";
+                        document.getElementById("text").innerHTML = "you win the big prize";
+                        endOfGame()
+                    }
+                    else {
+                        document.getElementById("start").value = "Next Round";
+                        document.getElementById("text").innerHTML = "Round " + round +
+                            " is complete <br> you earn " + priceAmount[round] + " $";
+
+                        if (round == 14) {
+                            document.getElementById("text").innerHTML +=
+                                "<br> OMG! Next round is the one million $ question!!!";
+                        }
+                    }
+                    showElements("text", "start");
+                    hideElements("timer", "50/50");
+                    document.getElementById("table").remove();
+                }
+            }, 1000);
         }
 
         // get the optional answers and the right one and create a answers table. on click reveal the correct answer.
-        function openAnswers(correct, answers, question) {
-            shuffle(answers);
+        function openAnswers(correctAnswer, answers, question, isFifty) {
             var table = document.createElement("TABLE");
             var clicks_counter = 0;
-
             table.setAttribute("id", "table");
             table.style.width = "600px"; table.style.position = "absolute";
             table.style.right = "270px"; table.style.top = "120px";
             document.body.appendChild(table);
 
+            var ansNum = answers.length;
+            if (isFifty) {
+                ansNum = ansNum / 2;
+            }
             // create answes table
-            for (var i = 0; i < answers.length + 1; i++) {
+            for (var i = 0; i < ansNum + 1; i++) {
                 var row = table.insertRow(0);
                 var cell = row.insertCell(0);
                 cell.setAttribute("id", answers[i]);
                 cell.style.width = "600px"; cell.style.textAlign = "center";
-                if (i == answers.length) {
+                if (i == ansNum) {
                     cell.innerHTML = question;
                     cell.className = "text"; cell.style.backgroundColor = "black"; cell.style.color = "orange";
                     cell.style.opacity = "100%";
                     continue;
                 }
                 cell.className = "myButton";
-                cell.innerHTML = answers[i];
+
+                if (isFifty) {
+                    cell.innerHTML = correctAnswer;
+                }
+                else {
+                    cell.innerHTML = answers[i];
+                }
 
                 cell.onclick = function () {
-                    if (clicks_counter) {
-                        return;
-                    }
-
-                    clicks_counter++;
-
-                    var is_correct = false;
-                    if (this.innerHTML == correct) {
-                        is_correct = true;
-                        document.getElementById("round").innerHTML = "Round:" + round;
-                    }
-
-                    document.getElementById(correct).className = "correct_style"; // change to green
-
-                    // wait 1 second and show the next question. remove the previous answers. 
-                    setTimeout(function () {
-                        clearInterval(cancel);
-                        time = "off";
-                        if (!is_correct) {
-                            endOfGame();
-                        }
-                        else {
-                            if (round == 15) {
-                                document.getElementById("start").value = "Start";
-                                document.getElementById("text").innerHTML = "you win the big prize";
-                                endOfGame()
-                            }
-                            else {
-                                document.getElementById("start").value = "Next Round";
-                                document.getElementById("text").innerHTML = "Round " + round +
-                                    " is complete <br> you earn " + priceAmount[round] + " $";
-
-                                if (round == 14) {
-                                    document.getElementById("text").innerHTML +=
-                                        "<br> OMG! Next round is the one million $ question!!!";
-                                }
-                            }
-                            showElements("text", "start");
-                            hideElements("timer");
-                            document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
-                        }
-                    }, 1000);
+                    alert("click");
+                    checkAnswer(clicks_counter, correctAnswer, this.innerHTML);
                 }
             }
         }
@@ -278,10 +286,9 @@
 
         // show a question on the screen.
         function openQuestion() {
-            hideElements("text");
             nextQuestion();
+            hideElements("text");
             document.getElementById("line" + round).style.backgroundColor = "orange";
-
         }
 
         function cleanAmountList() {
@@ -291,14 +298,15 @@
         }
 
         function endOfGame() {
+            if (round % 5 == 0) round--;
             round = round - (round % 5);
             document.getElementById("text").innerHTML = "your prize " + priceAmount[round] + " $";
             round = 0; // init round for the next game. 
             cleanAmountList();
-            document.getElementById("table").parentNode.removeChild(document.getElementById("table"));
+            document.getElementById("table").remove();
             document.getElementById("start").value = "play again";
             showElements("text", "start");
-            hideElements("round", "timer");
+            hideElements("round", "timer", "50/50");
             time = "off";
             onLoad();
             round = 0;
@@ -309,7 +317,7 @@
         function timer(minutes, seconds) {
             hideElements("start");
             document.getElementById("round").innerHTML = "Round:" + round;
-            showElements("round");
+            showElements("round", "50/50");
 
             if (time == "off") {
                 time = "on";
@@ -359,6 +367,12 @@
                 }
             }
         }
+
+        function fiftyFifty() {
+            document.getElementById("table").remove();
+            openAnswers(correct_answer, allAnswer, question, true);
+        }
+
     </script>
 </head>
 
@@ -368,14 +382,13 @@
 
         <body style="background-position-x: center; background-position-y: top; background-size: 1280px;
         background-repeat: no-repeat; background-image:
-        url(https://www.microids.com/wp-content/uploads/2020/10/WhoWantsToBeAMillionaire_keyart.jpg);"
+        url(https://www.microids.com/wp-content/uploads/2020/10/WhoWantsToBeAMillionaire_keyart.jpg)"
             onload="onLoad()">
             <div id="form1">
 
-                <ol reversed id="amountList" class="text"
-                    style="background-color:black ;position:absolute;
-                 top: 60px; right: 0%;width:150px;margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
-
+                <ol reversed id="amountList" class="text" style="background-color:black ;
+                position:absolute; top: 60px; right: 0%;width:150px;
+                margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
                 </ol>
 
                 <p id="text" class="text" style="font-size: 22px; width: 500px;
@@ -389,8 +402,13 @@
                     GOOD LUCK
                 </p>
 
+                <img id="50/50"
+                    src="https://static.wikia.nocookie.net/millionaire/images/7/73/Classic5050.png/revision/latest/scale-to-width-down/343?cb=20160407180209"
+                    width="100" , height="60" style=" cursor: pointer; position: absolute;
+                     top: 60px; right: 650px; visibility: hidden" onclick="fiftyFifty()"></img>
+
                 <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(1,30)"
-                    style="width:300px; position:absolute; top: 350px; right: 40%;" />
+                    style="width:300px; position:absolute; top: 350px; right: 42%" />
 
                 <div class="text" style="visibility: hidden">
 
