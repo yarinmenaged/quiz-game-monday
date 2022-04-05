@@ -105,7 +105,7 @@
     </style>
 
     <script type="text/javascript">
-        const myArray3 = [];
+        var myArray3 = ["", ""];
         var correct_answer = "";
         var question = "";
         var allAnswer = [];
@@ -127,20 +127,23 @@
             }
         }
 
+
         // replace substring with "☼" in myArray3
         function indicate(str) {
             myArray3[round] = myArray3[round].replace(str, "☼");
         }
 
-        // get the next question.
+        // load the next question.
         function nextQuestion() {
+            round++; // move to the next question.
+            if (myArray3[round] == "") {
+                round--; alert("הבאג של ריף");
+            }
             // split a question data from api URL to attributs and init.
-            indicate("category"); indicate("type"); indicate("difficulty");
+            indicate("type"); indicate("difficulty"); indicate("category");
             indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
-            const myArray2 = myArray3[round].split("☼");
-            var category = myArray2[1].slice(2, myArray2[1].length - 2);
-            var type = myArray2[2].slice(3, myArray2[2].length - 3);
-            var difficulty = myArray2[3].slice(3, myArray2[3].length - 3);
+
+            var myArray2 = myArray3[round].split("☼");
             question = myArray2[4].slice(3, myArray2[4].length - 3);
             allAnswer = [];
             // replace &quot with "
@@ -152,7 +155,7 @@
                 question = question.replace("&#039;", "'");
             }
 
-            correct_answer = myArray2[5].slice(3, myArray2[5].length - 3);
+            correct_answer = myArray2[5].slice(3, myArray2[5].length - 3) + "1";
             var incorrect_answers = myArray2[6].slice(2, myArray2[6].length - 0);
 
             while (incorrect_answers.indexOf('&quot') > -1) {
@@ -160,10 +163,10 @@
             }
 
             while (incorrect_answers.indexOf('&#039;') > -1) {
-                incorrect_answers = incorrect_answers.replace("&#039;", "'");
+                incorfrect_answers = incorrect_answers.replace("&#039;", "'");
             }
             // define an array to the answers and push the wrong answers
-            const Aincorrect_answers = incorrect_answers.split('"');
+            var Aincorrect_answers = incorrect_answers.split('"');
             var count = 0;
 
             for (var i = 0; i < Aincorrect_answers.length; i++) { // ignore openning and ending chars.
@@ -178,8 +181,6 @@
             // add the correct answer to the array.
             allAnswer[allAnswer.length] = correct_answer;
             shuffle(allAnswer);
-
-            round++; // move to the next question.
             openAnswers(correct_answer, allAnswer, question, false);
         }
 
@@ -203,18 +204,19 @@
                 }
                 else {
                     if (round == 15) {
-                        document.getElementById("start").value = "Start";
-                        document.getElementById("text").innerHTML = "you win the big prize";
                         endOfGame()
                     }
                     else {
                         document.getElementById("start").value = "Next Round";
                         document.getElementById("text").innerHTML = "Round " + round +
-                            " is complete <br> you earn " + priceAmount[round] + " $";
-
+                            " is complete <br> You earn " + priceAmount[round] + "$";
+                        if (round == 5 || round == 10) {
+                            document.getElementById("text").innerHTML +=
+                                "<p style='font-size:28px'>This is 'safe place'. your " + priceAmount[round] + "$ is guaranteed</p>";
+                        }
                         if (round == 14) {
                             document.getElementById("text").innerHTML +=
-                                "<br> OMG! Next round is the one million $ question!!!";
+                                "<p style='font-size:28px'> OMG! Next round is the one million $ question!!!</p>";
                         }
                     }
                     showElements("text", "start");
@@ -283,18 +285,16 @@
         function onLoad() {
 
             var str = "https://opentdb.com/api.php?amount=100";
-            const fetchData2 = str;
+            var fetchData2 = str;
 
             fetch(fetchData2)
                 .then((resp) => resp.json())
                 .then(function (data) {
                     let authors = data;
-                    const myArray = JSON.stringify(authors).split("}");
-                    myArray[0] = myArray[0].slice(30, myArray[0].length);
-                    myArray[0] = "," + myArray[0];
-                    for (i = 0; i < myArray.length; i++) {
-                        myArray3[i] = myArray[i];
-                    }
+                    var myArray = JSON.stringify(authors).split("}");
+                    myArray[0] = myArray[0].slice(30, myArray[0].length - 1);
+                    //myArray[0] = "," + myArray[0];
+                    myArray3 = myArray.slice(1);
                 })
         }
 
@@ -312,22 +312,34 @@
         }
 
         function endOfGame() {
-            if (round % 5 == 0) round--;
+            if (round == 5 || round == 10) round--;
             round = round - (round % 5);
-            document.getElementById("text").innerHTML = "your prize " + priceAmount[round] + " $";
+
+            if (round == 15) {
+                //document.getElementById("start").value = "Start";
+                document.getElementById("text").innerHTML =
+                    "<p style='font-size:28px'>WOW! You are the big winner.<br> What are you going to do with your 1,000,000$ ?</p>";
+            }
+
+            else {
+                document.getElementById("text").innerHTML = "Game over! <br> Your prize is: " + priceAmount[round] + "$";
+            }
+
             round = 0; // init round for the next game.
-            //init fifty Help
+            initFiftyFifty();
+        }
+
+        function initFiftyFifty() {
             boolFiftyClick = false;
             extraTime = false;
             cleanAmountList();
             document.getElementById("table").remove();
             document.getElementById("start").value = "play again";
             showElements("text", "start");
-            hideElements("round", "timer", "50/50", "extraTime","onExtraTime", "on50/50");
+            hideElements("round", "timer", "50/50", "extraTime", "onExtraTime", "on50/50");
             time = "off";
             onLoad();
             round = 0;
-
         }
 
         // limit time to the round
@@ -392,7 +404,10 @@
         function fiftyFifty() {
             if (boolFiftyClick) { return };
             //check if the question have less 4 answers
-            if (allAnswer.length < 4) { alert("in this question you can't use 50/50 help"); return };
+            if (allAnswer.length < 4) {
+                alert("There are only 2 answers... 50/50 is too much");
+                return;
+            }
             boolFiftyClick = true;
             document.getElementById("table").remove();
             openAnswers(correct_answer, allAnswer, question, true);
@@ -401,7 +416,10 @@
         //init global extraTime Help
         var extraTime = false;
         function extraTimeHelp() {
-            if (extraTime) { return };
+            if (extraTime) {
+                return;
+            }
+
             //init time by add 30 seconds to the real time
             clearInterval(cancel);
             time = "off";
@@ -443,16 +461,19 @@
                     src="http://vignette3.wikia.nocookie.net/millionaire/images/7/7e/5050.png/revision/latest?cb=20160801084559"
                     width="80" , height="60" style=" cursor: pointer; position: absolute;
                      top: 60px; right: 270px; visibility: hidden" onclick="fiftyFifty()"></img>
-                <img id="on50/50"
-                    src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
+
+                <img id="on50/50" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
                     width="80" , height="60" style=" cursor: pointer; position: absolute;
                    top: 60px; right: 270px; visibility: hidden"></img>
+
                 <img id="extraTime" src="https://ccinfo.unc.edu/wp-content/uploads/sites/219/2018/02/clock.png"
                     width="70" , height="60" style=" cursor: pointer; position: absolute;
                      top: 60px; right: 370px; visibility: hidden" onclick="extraTimeHelp()"></img>
+
                 <img id="onExtraTime" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
                     width="70" , height="60" style=" cursor: pointer; position: absolute;
                     top: 60px; right: 370px; visibility: hidden"></img>
+
                 <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(0,30)"
                     style="width:300px; position:absolute; top: 350px; right: 42%" />
 
