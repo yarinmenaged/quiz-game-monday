@@ -105,7 +105,7 @@
     </style>
 
     <script type="text/javascript">
-        var myArray3 = ["", ""];
+        var myArray3 = [];
         var correct_answer = "";
         var question = "";
         var allAnswer = [];
@@ -136,9 +136,7 @@
         // load the next question.
         function nextQuestion() {
             round++; // move to the next question.
-            if (myArray3[round] == "") {
-                round--; alert("הבאג של ריף");
-            }
+
             // split a question data from api URL to attributs and init.
             indicate("type"); indicate("difficulty"); indicate("category");
             indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
@@ -170,9 +168,8 @@
             var count = 0;
 
             for (var i = 0; i < Aincorrect_answers.length; i++) { // ignore openning and ending chars.
-                if (Aincorrect_answers[i] != "," &&
-                    Aincorrect_answers[i] != '}' && Aincorrect_answers[i] != '{' &&
-                    Aincorrect_answers[i] != ']' && Aincorrect_answers[i] != '[' && Aincorrect_answers[i] != null) {
+                if (Aincorrect_answers[i] != "," && Aincorrect_answers[i] != '}' && Aincorrect_answers[i] != '{'
+                    && Aincorrect_answers[i] != ']' && Aincorrect_answers[i] != '[' && Aincorrect_answers[i] != null) {
                     allAnswer[count] = Aincorrect_answers[i];
                     count++;
                 }
@@ -199,12 +196,12 @@
             setTimeout(function () {
                 clearInterval(cancel);
                 time = "off";
-                if (!is_correct) {
-                    endOfGame();
+                if (!is_correct) { // in case of wrong.
+                    endOfGame("lose");
                 }
                 else {
-                    if (round == 15) {
-                        endOfGame()
+                    if (round == 15) { // in case of winning the big prize
+                        endOfGame("win")
                     }
                     else {
                         document.getElementById("start").value = "Next Round";
@@ -212,14 +209,15 @@
                             " is complete <br> You earn " + priceAmount[round] + "$";
                         if (round == 5 || round == 10) {
                             document.getElementById("text").innerHTML +=
-                                "<p style='font-size:28px'>This is 'safe place'. your " + priceAmount[round] + "$ is guaranteed</p>";
+                                "<p style='font-size:28px'>This is 'safe place'. your "
+                                + priceAmount[round] + "$ is guaranteed</p>";
                         }
                         if (round == 14) {
                             document.getElementById("text").innerHTML +=
                                 "<p style='font-size:28px'> OMG! Next round is the one million $ question!!!</p>";
                         }
                     }
-                    showElements("text", "start");
+                    showElements("text", "start", "goAway");
                     hideElements("timer", "50/50", "extraTime");
                     if (extraTime) { hideElements("onExtraTime") };
                     if (boolFiftyClick) { hideElements("on50/50") };
@@ -284,6 +282,7 @@
         // get the data from the api and put the questions values on an array.
         function onLoad() {
 
+
             var str = "https://opentdb.com/api.php?amount=100";
             var fetchData2 = str;
 
@@ -293,16 +292,23 @@
                     let authors = data;
                     var myArray = JSON.stringify(authors).split("}");
                     myArray[0] = myArray[0].slice(30, myArray[0].length - 1);
-                    //myArray[0] = "," + myArray[0];
                     myArray3 = myArray.slice(1);
                 })
+            setTimeout(function () {
+                showElements("start", "amountList", "text");
+            }, 650);
         }
 
         // show a question on the screen.
         function openQuestion() {
             nextQuestion();
-            hideElements("text");
+            hideElements("text", "start", "goAway");
+            showElements("round", "50/50", "extraTime");
+            if (extraTime) { showElements("onExtraTime") };
+            if (boolFiftyClick) { showElements("on50/50") };
+            document.getElementById("round").innerHTML = "Round:" + round;
             document.getElementById("line" + round).style.backgroundColor = "orange";
+
         }
 
         function cleanAmountList() {
@@ -311,45 +317,47 @@
             }
         }
 
-        function endOfGame() {
-            if (round == 5 || round == 10) round--;
-            round = round - (round % 5);
+        function endOfGame(status) {
 
-            if (round == 15) {
-                //document.getElementById("start").value = "Start";
+            if (status != "goAway") {
+                if ((round % 5) == 0) round--;
+                round = round - (round % 5);
+            }
+
+            if (status == "win") {
                 document.getElementById("text").innerHTML =
                     "<p style='font-size:28px'>WOW! You are the big winner.<br> What are you going to do with your 1,000,000$ ?</p>";
             }
 
-            else {
-                document.getElementById("text").innerHTML = "Game over! <br> Your prize is: " + priceAmount[round] + "$";
+            else if (status == "goAway") {
+                document.getElementById("text").innerHTML =
+                    "<p style='font-size:28px'>Nice! You are not greedy.<br> Your prize is: " + priceAmount[round] + "$</p>";
             }
 
-            round = 0; // init round for the next game.
-            initFiftyFifty();
+            else { // case of losing.
+                document.getElementById("text").innerHTML =
+                    "<p style='font-size:40px'>Game over! <br> Your prize is: " + priceAmount[round] + "$</p>";
+            }
+
+            initNextGame();
         }
 
-        function initFiftyFifty() {
+        function initNextGame() {
+            showElements("text", "start");
+            hideElements("round", "timer", "goAway", "50/50", "extraTime", "onExtraTime", "on50/50");
+            document.getElementById("start").value = "play again";
+            document.getElementById("table").remove();
+            time = "off";
             boolFiftyClick = false;
             extraTime = false;
             cleanAmountList();
-            document.getElementById("table").remove();
-            document.getElementById("start").value = "play again";
-            showElements("text", "start");
-            hideElements("round", "timer", "50/50", "extraTime", "onExtraTime", "on50/50");
-            time = "off";
-            onLoad();
             round = 0;
+            onLoad();
         }
 
         // limit time to the round
         var cancel;
         function timer(minutes, seconds) {
-            hideElements("start");
-            document.getElementById("round").innerHTML = "Round:" + round;
-            showElements("round", "50/50", "extraTime");
-            if (extraTime) { showElements("onExtraTime") };
-            if (boolFiftyClick) { showElements("on50/50") };
             if (time == "off") {
                 time = "on";
                 var timer = document.getElementById("timer");
@@ -368,7 +376,7 @@
 
                     else if (seconds == 1 && minutes == 0) {
                         timer.innerHTML = "";
-                        endOfGame();
+                        endOfGame(false);
                         clearInterval(cancel);
                     }
 
@@ -420,10 +428,11 @@
                 return;
             }
 
-            //init time by add 30 seconds to the real time
+            //init time by add 30 seconds to the current time
             clearInterval(cancel);
             time = "off";
-            timer(0, parseInt(document.getElementById("timer").innerHTML.slice(3, document.getElementById("timer").innerHTML.length)) + 30);
+            timer(0, parseInt(document.getElementById("timer").innerHTML.
+                slice(3, document.getElementById("timer").innerHTML.length)) + 30);
             extraTime = true;
             showElements("onExtraTime");
         }
@@ -441,13 +450,19 @@
             onload="onLoad()">
             <div id="form1">
 
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/_lHqoSdEcfY?rel=0&autoplay=1"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+
                 <ol reversed id="amountList" class="text" style="background-color:black ;
-                position:absolute; top: 60px; right: 0%;width:150px;
+                position:absolute; top: 60px; right: 0%;width:150px; visibility: hidden;
                 margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
                 </ol>
 
                 <p id="text" class="text" style="font-size: 22px; width: 500px;
-                     position:absolute; top: 40px; right: 31%;">
+                     position:absolute; top: 40px; right: 31%; visibility: hidden;">
                     Welcome to who wants to be a millioner.<br />
                     In this game you can earn a Million dollar. <br />
                     There are 15 rounds with varying difficulty levels.<br />
@@ -475,7 +490,10 @@
                     top: 60px; right: 370px; visibility: hidden"></img>
 
                 <input id="start" value="START" type="button" class="myButton" onclick="openQuestion()+timer(0,30)"
-                    style="width:300px; position:absolute; top: 350px; right: 42%" />
+                    style="width:300px; position:absolute; top: 350px; right: 42%; visibility: hidden;" />
+
+                <input id="goAway" value="Go Away" type="button" class="myButton" onclick="endOfGame('goAway')"
+                    style="width:300px; position:absolute; top: 413px; right: 42%; visibility: hidden;" />
 
                 <div class="text" style="visibility: hidden">
 
