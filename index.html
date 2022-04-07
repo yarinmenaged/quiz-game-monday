@@ -11,14 +11,14 @@
             -moz-box-shadow: 0px 1px 0px 0px #1c1b18;
             -webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
             box-shadow: 0px 1px 0px 0px #1c1b18;
-            background-color: forestgreen;
+            background-color: orange;
             -moz-border-radius: 15px;
             -webkit-border-radius: 15px;
             border-radius: 15px;
             border: 4px solid red;
             display: inline-block;
             cursor: pointer;
-            color: #505739;
+            color: black;
             font-family: Calibri;
             font-size: 25px;
             font-weight: bold;
@@ -212,33 +212,35 @@
 
             setTimeout(function () {
                 clearInterval(cancel);
+                changeElement("table", "remove");
                 time = "off";
                 if (!is_correct) { // in case of wrong.
                     endOfGame("lose");
                 }
-                else {
-                    if (round == 15) { // in case of winning the big prize
-                        endOfGame("win")
-                    }
-                    else {
-                        changeElement("start", "value", "Next Round");
-                        changeElement("text", "write into", "Round " + round +
-                            " is complete <br> You earn " + priceAmount[round] + "$");
 
-                        if (round == 5 || round == 10) {
-                            changeElement("text", "concat", "<p style='font-size:28px'>This is 'safe place'. your "
-                                + priceAmount[round] + "$ is guaranteed</p>");
-                        }
-                        if (round == 14) {
-                            changeElement("text", "concat", "<p style='font-size:28px'> OMG! Next round is the one million $ question!!!</p>");
-                        }
+                else if (round == 15) { // in case of winning the big prize
+                    endOfGame("win")
+                }
+
+                else {
+                    changeElement("start", "value", "Next Round");
+                    changeElement("text", "write into", "Round " + round +
+                        " is complete <br> You earn " + priceAmount[round] + "$");
+
+                    if (round == 5 || round == 10) {
+                        changeElement("text", "concat", "<p style='font-size:28px'>This is 'safe place'. your "
+                            + priceAmount[round] + "$ is guaranteed</p>");
+                    }
+                    if (round == 14) {
+                        changeElement("text", "concat", "<p style='font-size:28px'> OMG! Next round is the one million $ question!!!</p>");
                     }
                     showElements("text", "start", "goAway");
                     hideElements("timer", "50/50", "extraTime");
                     if (extraTime) { hideElements("onExtraTime") };
                     if (boolFiftyClick) { hideElements("on50/50") };
-                    changeElement("table", "remove");
                 }
+
+
             }, 1000);
         }
 
@@ -298,7 +300,6 @@
         // get the data from the api and put the questions values on an array.
         function onLoad() {
 
-
             var str = "https://opentdb.com/api.php?amount=100";
             var fetchData2 = str;
 
@@ -324,6 +325,7 @@
             if (boolFiftyClick) { showElements("on50/50") };
             changeElement("round", "write into", "Round:" + round);
             changeElement("line" + round, "backgroundColor", "orange");
+
         }
 
         function cleanAmountList() {
@@ -358,19 +360,24 @@
         }
 
         function initNextGame() {
-            cleanAmountList();
-            round = 0;
-            showElements("text", "start", "password");
-            hideElements("round", "timer", "goAway", "50/50", "extraTime", "onExtraTime", "on50/50");
+
+            hideElements("round", "timer", "goAway", "50/50", "extraTime",
+                "onExtraTime", "on50/50", "start", "text");
             changeElement("start", "value", "Play Again");
-            changeElement("table", "remove");
+            cleanAmountList();
+
+            setTimeout(function () {
+                showElements("text", "start", "password");
+            }, 500);
+
+            round = 0;
             time = "off";
             boolFiftyClick = false;
             extraTime = false;
-            onLoad();
+            onLoad(); // loading new questions for the next game.
         }
 
-        // limit time to the round
+        // limit time to the round.
         var cancel;
         function timer(minutes, seconds) {
             if (time == "off") {
@@ -391,6 +398,7 @@
 
                     else if (seconds == 1 && minutes == 0) {
                         timer.innerHTML = "";
+                        changeElement("table", "remove");
                         endOfGame(false);
                         clearInterval(cancel);
                     }
@@ -471,19 +479,25 @@
             }
             else {
                 var answer = document.getElementById("text box").value;
-                if (answer == ("yarin" || "Yarin" || "YARIN")) {
-                    optionToCheat = true;
-                    changeElement("next", "write into", "Press here to mark the correct answers");
-                    changeElement("password massage", "write into", "CHEAT IS NOT RUNNING");
-                    document.getElementById("password massage").style.color = "red";
-                    hideElements("text box");
+                switch (answer) {
+                    case "yarin":
+                    case "Yarin":
+                    case "YARIN":
+                        optionToCheat = true;
+                        changeElement("next", "write into", "Press here to mark the correct answers");
+                        changeElement("password massage", "write into", "CHEAT IS NOT RUNNING");
+                        document.getElementById("password massage").style.color = "red";
+                        hideElements("text box");
+                        break;
+                    default:
+                        alert("Incorrect name");
+                        return;
                 }
-                else {
-                    alert("Incorrect name");
-                    return;
-                }
+
             }
+
         }
+
     </script>
 </head>
 
@@ -513,7 +527,7 @@
             There are 15 rounds with increasing prize amounts .<br>
             You have 2 lifelines- extra time and 50/50. You can use them only once.<br>
             Between rounds you can go away and win the current amount.
-            if you dont do so, one mistake and you lose!
+            if you don't do so, one mistake and you lose!
             Your prize will be the amount of the last "safe place" you reached.<br>
             GOOD LUCK
         </p>
@@ -522,7 +536,7 @@
                   width: 400px; height: 85px; font-size: small;" class="text">
             <p id="password massage">If you want to cheat, please enter the first name of the website founder:</p>
             <input id="text box" type="text">
-            <button id="next" onclick="password()">Next</button>
+            <button id="next" style="cursor: pointer;" onclick="password()">Next</button>
         </div>
 
         <img id="50/50"
