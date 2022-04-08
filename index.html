@@ -260,7 +260,7 @@
             // create question&answer table.
             var table = document.createElement("TABLE");
             table.setAttribute("id", "table");
-            table.style.width = "600px"; table.style.position = "fixed";
+            table.style.width = "600px"; table.style.position = "absolute";
             table.style.right = "270px"; table.style.top = "120px";
             document.body.appendChild(table);
 
@@ -534,7 +534,7 @@
         onload="onLoad()">
 
         <p id="text" class="text" style="font-size: 20px; width: 500px;
-                     position:fixed; top: 40px; right: 27%; visibility: hidden;">
+                     position:absolute; top: 40px; right: 27%; visibility: hidden;">
             Welcome to Who Wants To Be A Millioner.<br>
             In this game you can earn a million dollar. <br>
             There are 15 rounds with increasing prize amounts .<br>
@@ -551,11 +551,11 @@
         </iframe>
 
         <ol reversed id="amountList" class="text" style="background-color:black ;
-               position:fixed; top: 60px; right: 0%;width:150px; visibility: hidden;
+               position:absolute; top: 60px; right: 0%;width:150px; visibility: hidden;
                 margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
         </ol>
 
-        <div id="password" style="visibility: hidden; position: fixed; top: 420px; right: 32%; 
+        <div id="password" style="visibility: hidden; position: absolute; top: 420px; right: 32%; 
                   width: 400px; height: 85px; font-size: small;" class="text">
 
             <p id="password massage">If you want to cheat, please enter the first name of the website founder:</p>
@@ -564,7 +564,7 @@
 
         </div>
 
-        <div style="width:400px; position:fixed; top: 357px; right: 35%; visibility: hidden;" type="button">
+        <div style="width:400px; position:absolute; top: 357px; right: 35%; visibility: hidden;" type="button">
 
             <input id="start" value="START" class="button" onclick="openQuestion()" />
             <input id="goAway" value="Go Away" class="button" onclick="endOfGame('goAway')" />
@@ -575,11 +575,11 @@
 
             <p id="timer"
                 style="width: 100px; background-color: black; color: red; border-radius: 10px;
-                       font-size:36px; text-align: center; position: fixed; right: 800px; top: 30px; border: 4px solid blue">
+                       font-size:36px; text-align: center; position: absolute; right: 800px; top: 30px; border: 4px solid blue">
             </p>
 
             <p id="round" style=" width:auto;border-color:black; color: white; width: 224px; border-radius: 10px;
-                       font-size:24px;position: fixed;right: 5px;top: 0%;background-color: black; 
+                       font-size:24px;position: absolute;right: 5px;top: 0%;background-color: black; 
                        border: 4px solid blue">
             </p>
 
@@ -587,21 +587,21 @@
         <div style=" cursor: pointer; visibility: hidden">
             <img id="50/50" alt="extra time"
                 src="http://vignette3.wikia.nocookie.net/millionaire/images/7/7e/5050.png/revision/latest?cb=20160801084559"
-                width="80" height="60" style="top: 60px; right: 270px; position: fixed" onclick="fiftyFifty()">
+                width="80" height="60" style="top: 60px; right: 270px; position: absolute" onclick="fiftyFifty()">
             </img>
 
             <img id="on50/50" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
-                width="80" height="60" style="top: 60px; right: 270px; position: fixed">
+                width="80" height="60" style="top: 60px; right: 270px; position: absolute">
             </img>
 
             <img id="extraTime" alt="extra time"
                 src="https://ccinfo.unc.edu/wp-content/uploads/sites/219/2018/02/clock.png" width="70" height="60"
-                style=" cursor: pointer; position: fixed;
-              top: 60px; right: 370px; position: fixed" onclick="extraTime()">
+                style=" cursor: pointer; position: absolute;
+              top: 60px; right: 370px; position: absolute" onclick="extraTime()">
             </img>
 
             <img id="onExtraTime" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
-                width="70" , height="60" style=" cursor: pointer; position: fixed; top: 60px; right: 370px">
+                width="70" , height="60" style=" cursor: pointer; position: absolute; top: 60px; right: 370px">
             </img>
         </div>
     </body>
