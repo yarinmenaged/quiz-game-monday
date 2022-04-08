@@ -166,19 +166,31 @@
                 })
 
             setTimeout(function () {
-                showElements("start", "amountList", "text", "password", "music");
+                showElements("start", "amountList", "text", "password");
             }, 650);
         }
 
+        var isFirst = true;
         // show a question on the screen.
         function openQuestion() {
-            nextQuestion();
-            hideElements("text", "start", "goAway", "password");
-            showElements("round", "50/50", "extraTime");
-            if (isExtraTimeUsed) { showElements("onExtraTime") };
-            if (isFiftyUsed) { showElements("on50/50") };
-            changeElement("round", "write into", "Round:" + round);
-            changeElement("line" + round, "backgroundColor", "orange");
+
+            // change music.
+            if (isFirst) {
+                document.getElementById("music").src =
+                    "https://www.youtube.com/embed/Hll_igbaa5E?autoplay=1&start=42";
+                isFirst = false;
+            }
+
+            setTimeout(function () {
+                timer(0, 30);
+                nextQuestion();
+                hideElements("text", "start", "goAway", "password");
+                showElements("round", "50/50", "extraTime");
+                if (isExtraTimeUsed) { showElements("onExtraTime") };
+                if (isFiftyUsed) { showElements("on50/50") };
+                changeElement("round", "write into", "Round:" + round);
+                changeElement("line" + round, "backgroundColor", "orange");
+            }, 1000);
         }
 
         // load the next question.
@@ -299,6 +311,10 @@
             if (clickValue == correctAnswer) {
                 is_correct = true;
                 changeElement("round", "write into", "Round:" + round); // update round number
+                if (round == 15) {
+                    document.getElementById("music").src =
+                        "https://www.youtube.com/embed/04854XqcfCY?start=39&autoplay=1";
+                }
             }
             document.getElementById(correctAnswer).className = "correctStyle";
 
@@ -345,6 +361,7 @@
             }
 
             if (status == "win") {
+                isFirst = true;
                 changeElement("text", "write into",
                     "<p style='font-size:28px'>WOW! You are the big winner.<br> What are you going to do with your 1,000,000$ ?</p>");
             }
@@ -529,10 +546,11 @@
         </p>
 
         <!-- add background music. autoplay doesn't work in all browsers -->
-        <iframe  style="display:none;" allow="autoplay" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1" ></iframe>
+        <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13" allow="autoplay"
+            style="visibility: hidden;">
+        </iframe>
 
-        <ol reversed id="amountList" 
-              class="text" style="background-color:black ;
+        <ol reversed id="amountList" class="text" style="background-color:black ;
                position:absolute; top: 60px; right: 0%;width:150px; visibility: hidden;
                 margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
         </ol>
@@ -548,7 +566,7 @@
 
         <div style="width:400px; position:absolute; top: 357px; right: 35%; visibility: hidden;" type="button">
 
-            <input id="start" value="START" class="button" onclick="openQuestion()+timer(0,30)" />
+            <input id="start" value="START" class="button" onclick="openQuestion()" />
             <input id="goAway" value="Go Away" class="button" onclick="endOfGame('goAway')" />
 
         </div>
@@ -566,27 +584,26 @@
             </p>
 
         </div>
-<div style=" cursor: pointer; visibility: hidden">
-        <img id="50/50" alt="extra time"
-            src="http://vignette3.wikia.nocookie.net/millionaire/images/7/7e/5050.png/revision/latest?cb=20160801084559"
-            width="80" height="60" style="top: 60px; right: 270px; position: absolute" onclick="fiftyFifty()">
-        </img>
+        <div style=" cursor: pointer; visibility: hidden">
+            <img id="50/50" alt="extra time"
+                src="http://vignette3.wikia.nocookie.net/millionaire/images/7/7e/5050.png/revision/latest?cb=20160801084559"
+                width="80" height="60" style="top: 60px; right: 270px; position: absolute" onclick="fiftyFifty()">
+            </img>
 
-        <img id="on50/50"
-            src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png" width="80"
-            height="60" style="top: 60px; right: 270px; position: absolute">
-        </img>
+            <img id="on50/50" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
+                width="80" height="60" style="top: 60px; right: 270px; position: absolute">
+            </img>
 
-        <img id="extraTime" alt="extra time"
-            src="https://ccinfo.unc.edu/wp-content/uploads/sites/219/2018/02/clock.png" width="70"
-            height="60" style=" cursor: pointer; position: absolute;
+            <img id="extraTime" alt="extra time"
+                src="https://ccinfo.unc.edu/wp-content/uploads/sites/219/2018/02/clock.png" width="70" height="60"
+                style=" cursor: pointer; position: absolute;
               top: 60px; right: 370px; position: absolute" onclick="extraTime()">
-        </img>
+            </img>
 
-        <img id="onExtraTime"
-            src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
-            width="70" , height="60" style=" cursor: pointer; position: absolute; top: 60px; right: 370px">
-        </img>
-</div>
+            <img id="onExtraTime" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
+                width="70" , height="60" style=" cursor: pointer; position: absolute; top: 60px; right: 370px">
+            </img>
+        </div>
     </body>
+
 </html>
