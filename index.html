@@ -144,6 +144,11 @@
 
         }
 
+        function musicAutoplay() {
+            document.getElementById("music").src =
+                    "https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13";
+        }
+
         // replace substring with "☼" in questionList
         function indicate(str) {
             questionList[round] = questionList[round].replace(str, "☼");
@@ -164,8 +169,7 @@
                     questionList = JSON.stringify(authors).split("}");
                     questionList[0] = questionList[0].slice(30, questionList[0].length - 1);
                 })
-                document.getElementById("music").src =
-                    "https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13";
+
             setTimeout(function () {
                 showElements("start", "amountList", "text", "password");
             }, 650);
@@ -527,7 +531,7 @@
 
 <!-------------------------------------------------------- HTML page -------------------------------------------------------->
 
-<body onload="onLoad()+setAmountList()">
+<body onload="onLoad() + setAmountList() + musicAutoplay()">
 
     <body style="background-position-x: center; background-position-y: top; background-size: 1280px;
         background-repeat: no-repeat; background-image:
