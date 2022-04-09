@@ -164,7 +164,8 @@
                     questionList = JSON.stringify(authors).split("}");
                     questionList[0] = questionList[0].slice(30, questionList[0].length - 1);
                 })
-
+                document.getElementById("music").src =
+                    "https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13";
             setTimeout(function () {
                 showElements("start", "amountList", "text", "password");
             }, 650);
