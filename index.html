@@ -144,11 +144,6 @@
 
         }
 
-        function musicAutoplay() {
-            document.getElementById("music").src =
-                    "https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13";
-        }
-
         // replace substring with "☼" in questionList
         function indicate(str) {
             questionList[round] = questionList[round].replace(str, "☼");
@@ -531,7 +526,7 @@
 
 <!-------------------------------------------------------- HTML page -------------------------------------------------------->
 
-<body onload="onLoad() + setAmountList() + musicAutoplay()">
+<body onload="onLoad() + setAmountList()">
 
     <body style="background-position-x: center; background-position-y: top; background-size: 1280px;
         background-repeat: no-repeat; background-image:
