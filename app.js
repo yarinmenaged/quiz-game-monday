@@ -57,7 +57,6 @@ function changeElement(name, att, newAtt) {
             document.getElementById(name).style.backgroundColor = newAtt;
             break;
     }
-
 }
 
 // replace substring with "☼" in questionList
@@ -102,8 +101,8 @@ function openQuestion() {
         nextQuestion();
         hideElements("text", "start", "goAway", "password");
         showElements("round", "50/50", "extraTime");
-        if (isExtraTimeUsed) { showElements("onExtraTime") };
-        if (isFiftyUsed) { showElements("on50/50") };
+        if (didExtraTimeUsed) { showElements("onExtraTime") };
+        if (didFiftyUsed) { showElements("on50/50") };
         changeElement("round", "write into", "Round:" + round);
         changeElement("line" + round, "backgroundColor", "orange");
     }, 1000);
@@ -227,6 +226,8 @@ function checkAnswer(correctAnswer, clickValue) {
     if (clickValue == correctAnswer) {
         is_correct = true;
         changeElement("round", "write into", "Round:" + round); // update round number
+    
+        // play the winning music
         if (round == 15) {
             document.getElementById("music").src =
                 "https://www.youtube.com/embed/04854XqcfCY?start=39&autoplay=1";
@@ -253,8 +254,8 @@ function checkAnswer(correctAnswer, clickValue) {
                 " is complete <br> You earn " + priceAmount[round] + "$");
             showElements("text", "start", "goAway");
             hideElements("timer", "50/50", "extraTime");
-            if (isExtraTimeUsed) { hideElements("onExtraTime") };
-            if (isFiftyUsed) { hideElements("on50/50") };
+            if (didExtraTimeUsed) { hideElements("onExtraTime") };
+            if (didFiftyUsed) { hideElements("on50/50") };
 
             if (round == 5 || round == 10) { // "safe place"
                 changeElement("text", "concat", "<p style='font-size:28px'>This is 'safe place'. your "
@@ -306,8 +307,8 @@ function initNextGame() {
 
     round = 0;
     time = "off";
-    isFiftyUsed = false;
-    isExtraTimeUsed = false;
+    didFiftyUsed = false;
+    didExtraTimeUsed = false;
     onLoad(); // loading new questions for the next game.
 }
 
@@ -333,9 +334,9 @@ function cleanAmountList() {
     }
 }
 
-var isFiftyUsed = false; // init global fifty lifeline.
+var didFiftyUsed = false; // init global fifty lifeline.
 function fiftyFifty() {
-    if (isFiftyUsed) { return };
+    if (didFiftyUsed) { return };
 
     //check if the question have less than 4 answers
     if (allAnswers.length < 4) {
@@ -343,15 +344,15 @@ function fiftyFifty() {
         return;
     }
 
-    isFiftyUsed = true;
+    didFiftyUsed = true;
     changeElement("table", "remove");
     openAnswers(correctAnswer, allAnswers, question, true);
     showElements("on50/50"); // cannot use 50/50 again.
 }
 
-var isExtraTimeUsed = false; // init global extraTime lifeline.
+var didExtraTimeUsed = false; // init global extraTime lifeline.
 function extraTime() {
-    if (isExtraTimeUsed) {
+    if (didExtraTimeUsed) {
         return;
     }
 
@@ -361,7 +362,7 @@ function extraTime() {
     timer(0, parseInt(document.getElementById("timer").innerHTML.
         slice(3, document.getElementById("timer").innerHTML.length)) + 30);
 
-    isExtraTimeUsed = true;
+    didExtraTimeUsed = true;
     showElements("onExtraTime"); // cannot use extra time again.
 }
 
