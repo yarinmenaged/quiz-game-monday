@@ -42,7 +42,9 @@ function changeElement(name, att, newAtt) {
             break;
 
         case "remove":
-            document.getElementById(name).remove();
+            if (document.getElementById(name) != null) {
+                document.getElementById(name).remove();
+            }
             break;
 
         case "write into":
@@ -199,7 +201,7 @@ function openAnswers(correctAnswer, answers, question, isFifty) {
         let cell = row.insertCell(0);
         cell.setAttribute("id", answers[i]);
         cell.style.width = "600px"; cell.style.textAlign = "center";
-        if (i == ansNum) {
+        if (i == ansNum) { // question cell
             cell.innerHTML = question;
             cell.className = "text"; cell.style.backgroundColor = "black"; cell.style.color = "orange";
             cell.style.opacity = "100%";
@@ -214,6 +216,7 @@ function openAnswers(correctAnswer, answers, question, isFifty) {
         cell.className = "button";
 
         cell.onclick = function () {
+            cell.disabled = true;
             checkAnswer(correctAnswer, this.innerHTML);
         }
     }
@@ -226,14 +229,20 @@ function checkAnswer(correctAnswer, clickValue) {
     if (clickValue == correctAnswer) {
         is_correct = true;
         changeElement("round", "write into", "Round:" + round); // update round number
-    
+
         // play the winning music
         if (round == 15) {
             document.getElementById("music").src =
                 "https://www.youtube.com/embed/04854XqcfCY?start=39&autoplay=1";
         }
     }
-    document.getElementById(correctAnswer).className = "correctStyle";
+    else { // red color for wrong answer.
+        document.getElementById(clickValue).style.background =
+            "linear-gradient(to bottom, red 5%, red 100%)";
+    } // orange for correct.
+    document.getElementById(correctAnswer).style.background =
+        "linear-gradient(to bottom, orange 5%, orange 100%)";
+    document.getElementById(correctAnswer).style.color = "black";
 
     setTimeout(function () {
         clearInterval(cancel);
