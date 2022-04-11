@@ -1,10 +1,10 @@
-// global vars.
-var questionList = [];
-var correctAnswer = "";
-var question = "";
-var allAnswers = [];
-var round = 0;
-var time = "off";
+// global lets.
+let questionList = [];
+let correctAnswer = "";
+let question = "";
+let allAnswers = [];
+let round = 0;
+let time = "off";
 const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
     "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
 
@@ -24,13 +24,13 @@ function addPreZeros(number) {
 }
 
 function hideElements() {
-    for (var i = 0; i < arguments.length; i++) {
+    for (let i = 0; i < arguments.length; i++) {
         document.getElementById(arguments[i]).style.visibility = "hidden";
     }
 }
 
 function showElements() {
-    for (var i = 0; i < arguments.length; i++) {
+    for (let i = 0; i < arguments.length; i++) {
         document.getElementById(arguments[i]).style.visibility = "visible";
     }
 }
@@ -70,7 +70,7 @@ function indicate(str) {
 // moreover, create the opening screen.
 function onLoad() {
 
-    var str = "https://opentdb.com/api.php?amount=100";
+    const str = "https://opentdb.com/api.php?amount=100";
 
     fetch(str)
         .then((resp) => resp.json())
@@ -85,7 +85,7 @@ function onLoad() {
     }, 650);
 }
 
-var isFirst = true;
+let isFirst = true;
 // show a question on the screen.
 function openQuestion() {
 
@@ -115,7 +115,7 @@ function nextQuestion() {
     // split the question data by attributs.
     indicate("type"); indicate("difficulty"); indicate("category");
     indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
-    var quAttList = questionList[round].split("☼");
+    let quAttList = questionList[round].split("☼");
     question = quAttList[4].slice(3, quAttList[4].length - 3);
 
     allAnswers = []; // init the answers of the current question.
@@ -138,7 +138,7 @@ function nextQuestion() {
         correctAnswer = quAttList[5].slice(3, quAttList[5].length - 3);
     }
 
-    var incorrectAnswers = quAttList[6].slice(2, quAttList[6].length - 0);
+    let incorrectAnswers = quAttList[6].slice(2, quAttList[6].length - 0);
 
     // replace &quot with "
     while (incorrectAnswers.indexOf('&quot') > -1) {
@@ -151,10 +151,10 @@ function nextQuestion() {
     }
 
     // define an array to the answers and push the wrong answers
-    var temp = incorrectAnswers.split('"');
+    let temp = incorrectAnswers.split('"');
 
     // ignore openning and ending chars.
-    for (var i = 0, j = 0; i < temp.length; i++) {
+    for (let i = 0, j = 0; i < temp.length; i++) {
         if (temp[i] != "," && temp[i] != '}' && temp[i] != '{'
             && temp[i] != ']' && temp[i] != '[' && temp[i] != null) {
             allAnswers[j] = temp[i];
@@ -173,20 +173,20 @@ function nextQuestion() {
 function openAnswers(correctAnswer, answers, question, isFifty) {
 
     // create question&answer table.
-    var table = document.createElement("TABLE");
+    const table = document.createElement("TABLE");
     table.setAttribute("id", "table");
     table.style.width = "600px"; table.style.position = "absolute";
     table.style.right = "270px"; table.style.top = "120px";
     document.body.appendChild(table);
 
     // in case of using 50/50 lifeline- hide 2 inccorect answer.
-    var ansNum = answers.length;
+    const ansNum = answers.length;
     if (isFifty) {
-        var randomNumber = Math.floor(Math.random() * 4);
+        let randomNumber = Math.floor(Math.random() * 4);
         while (answers[randomNumber] == correctAnswer) {
             randomNumber = Math.floor(Math.random() * 4);
         }
-        for (var i = 0; i < answers.length; i++) {
+        for (let i = 0; i < answers.length; i++) {
             if (answers[i] != correctAnswer && i != randomNumber) {
                 answers[i] = "-";
             }
@@ -194,9 +194,9 @@ function openAnswers(correctAnswer, answers, question, isFifty) {
     }
 
     // set question&answes table
-    for (var i = 0; i < ansNum + 1; i++) {
-        var row = table.insertRow(0);
-        var cell = row.insertCell(0);
+    for (let i = 0; i < ansNum + 1; i++) {
+        let row = table.insertRow(0);
+        let cell = row.insertCell(0);
         cell.setAttribute("id", answers[i]);
         cell.style.width = "600px"; cell.style.textAlign = "center";
         if (i == ansNum) {
@@ -221,8 +221,8 @@ function openAnswers(correctAnswer, answers, question, isFifty) {
 
 function checkAnswer(correctAnswer, clickValue) {
 
-    // change global var is_correct if user clicked on the correct answer
-    var is_correct = false;
+    // change global let is_correct if user clicked on the correct answer
+    let is_correct = false;
     if (clickValue == correctAnswer) {
         is_correct = true;
         changeElement("round", "write into", "Round:" + round); // update round number
@@ -249,7 +249,7 @@ function checkAnswer(correctAnswer, clickValue) {
         }
 
         else { // game is continue, move to the next screen.
-            changeElement("start", "value", "Next Round");
+            changeElement("start", "write into", "Next Round");
             changeElement("text", "write into", "Round " + round +
                 " is complete <br> You earn " + priceAmount[round] + "$");
             showElements("text", "start", "goAway");
@@ -298,7 +298,7 @@ function initNextGame() {
 
     hideElements("round", "timer", "goAway", "50/50", "extraTime",
         "onExtraTime", "on50/50", "start", "text");
-    changeElement("start", "value", "Play Again");
+    changeElement("start", "write into", "Play Again");
     cleanAmountList();
 
     setTimeout(function () {
@@ -314,8 +314,8 @@ function initNextGame() {
 
 // push the price amounts to the list element 
 function setAmountList() {
-    for (var i = priceAmount.length - 1; i > 0; i--) {
-        var row = document.createElement("li");
+    for (let i = priceAmount.length - 1; i > 0; i--) {
+        const row = document.createElement("li");
 
         row.appendChild(document.createTextNode(priceAmount[i] + "$"));
         document.getElementById("amountList").appendChild(row);
@@ -329,12 +329,12 @@ function setAmountList() {
 
 // init the amounts list for the next game.
 function cleanAmountList() {
-    for (var i = 1; i < priceAmount.length; i++) {
+    for (let i = 1; i < priceAmount.length; i++) {
         changeElement("line" + i, "backgroundColor", "black");
     }
 }
 
-var didFiftyUsed = false; // init global fifty lifeline.
+let didFiftyUsed = false; // init global fifty lifeline.
 function fiftyFifty() {
     if (didFiftyUsed) { return };
 
@@ -350,7 +350,7 @@ function fiftyFifty() {
     showElements("on50/50"); // cannot use 50/50 again.
 }
 
-var didExtraTimeUsed = false; // init global extraTime lifeline.
+let didExtraTimeUsed = false; // init global extraTime lifeline.
 function extraTime() {
     if (didExtraTimeUsed) {
         return;
@@ -366,8 +366,8 @@ function extraTime() {
     showElements("onExtraTime"); // cannot use extra time again.
 }
 
-var optionToCheat = false; // cheat availability
-var cheat = false; // cheat activity.
+let optionToCheat = false; // cheat availability
+let cheat = false; // cheat activity.
 function password() {
     if (optionToCheat) {
         if (!cheat) {
@@ -385,7 +385,7 @@ function password() {
     }
 
     else {
-        var answer = document.getElementById("text box").value;
+        const answer = document.getElementById("text box").value;
 
         switch (answer) {
             case "yarin": case "YARIN": case "Yarin":
@@ -404,11 +404,11 @@ function password() {
 }
 
 // Allocate time for raound.
-var cancel;
+let cancel;
 function timer(minutes, seconds) {
     if (time == "off") {
         time = "on";
-        var timer = document.getElementById("timer");
+        const timer = document.getElementById("timer");
         showElements("timer");
         timer.innerHTML = addPreZeros(minutes) + ":" + addPreZeros(seconds);
         cancel = setInterval(decrementSeconds, 1000);
