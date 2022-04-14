@@ -102,9 +102,9 @@ function openQuestion() {
         timer(0, 30);
         nextQuestion();
         hideElements("text", "start", "goAway", "password");
-        showElements("round", "50/50", "extraTime");
-        if (didExtraTimeUsed) { showElements("onExtraTime") };
-        if (didFiftyUsed) { showElements("on50/50") };
+        showElements("round", "fifty", "extraTime");
+        if (didExtraTimeUsed) { showElements("noExtraTime") };
+        if (didFiftyUsed) { showElements("noFifty") };
         changeElement("round", "write into", "Round:" + round);
         changeElement("line" + round, "backgroundColor", "orange");
     }, 1000);
@@ -262,9 +262,9 @@ function checkAnswer(correctAnswer, clickValue) {
             changeElement("text", "write into", "Round " + round +
                 " is complete <br> You earn " + priceAmount[round] + "$");
             showElements("text", "start", "goAway");
-            hideElements("timer", "50/50", "extraTime");
-            if (didExtraTimeUsed) { hideElements("onExtraTime") };
-            if (didFiftyUsed) { hideElements("on50/50") };
+            hideElements("timer", "fifty", "extraTime");
+            if (didExtraTimeUsed) { hideElements("noExtraTime") };
+            if (didFiftyUsed) { hideElements("noFifty") };
 
             if (round == 5 || round == 10) { // "safe place"
                 changeElement("text", "concat", "<p style='font-size:28px'>This is 'safe place'. your "
@@ -305,8 +305,8 @@ function endOfGame(status) {
 
 function initNextGame() {
 
-    hideElements("round", "timer", "goAway", "50/50", "extraTime",
-        "onExtraTime", "on50/50", "start", "text");
+    hideElements("round", "timer", "goAway", "fifty", "extraTime",
+        "noExtraTime", "noFifty", "start", "text");
     changeElement("start", "write into", "Play Again");
     cleanAmountList();
 
@@ -356,7 +356,7 @@ function fiftyFifty() {
     didFiftyUsed = true;
     changeElement("table", "remove");
     openAnswers(correctAnswer, allAnswers, question, true);
-    showElements("on50/50"); // cannot use 50/50 again.
+    showElements("noFifty"); // cannot use 50/50 again.
 }
 
 let didExtraTimeUsed = false; // init global extraTime lifeline.
@@ -372,7 +372,7 @@ function extraTime() {
         slice(3, document.getElementById("timer").innerHTML.length)) + 30);
 
     didExtraTimeUsed = true;
-    showElements("onExtraTime"); // cannot use extra time again.
+    showElements("noExtraTime"); // cannot use extra time again.
 }
 
 let optionToCheat = false; // cheat availability

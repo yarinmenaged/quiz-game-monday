@@ -2,23 +2,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<head>
-    <title>Millioner</title>
-   
-    <link rel="stylesheet" href="style.css">
+    <head>
+        <title>Millioner</title>
 
-    <script type="text/javascript" src="app.js"></script>
-</head>
+        <link rel="stylesheet" href="style.css">
 
-<body onload="onLoad() + setAmountList()">
+        <script type="text/javascript" src="app.js"></script>
+    </head>
 
-    <body style="background-position-x: center; background-position-y: top; background-size: 1280px;
-        background-repeat: no-repeat; background-image: 
-        url(https://www.microids.com/wp-content/uploads/2020/10/WhoWantsToBeAMillionaire_keyart.jpg)"
-        onload="onLoad()">
+    <body onload="onLoad() + setAmountList()">
 
-        <p id="text" class="text" style="font-size: 20px; width: 600px;
-                     position:absolute; top: 40px; right: 26%; visibility: hidden;">
+        <p id="text" class="text">
             Welcome to Who Wants To Be A Millioner.<br>
             In this game you can earn a million dollar. <br>
             There are 15 rounds with increasing prize amounts .<br>
@@ -30,64 +24,43 @@
         </p>
 
         <!-- add background music. autoplay doesn't work in all browsers -->
-        <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13" allow="autoplay"
-            style="visibility: hidden;">
+        <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13"
+             allow="autoplay" style="visibility: hidden;">
         </iframe>
 
-        <ol reversed id="amountList" class="text" style="background-color:black ;
-               position:absolute; top: 60px; right: 0%;width:150px; visibility: hidden;
-                margin: 0; padding:0 1.5em 0 1.7em; color:white; border: 4px solid blue;">
-        </ol>
+        <ol reversed id="amountList" class="text"></ol>
 
-        <div id="password" style="visibility: hidden; position: absolute; top: 420px; right: 35%; 
-                  width: 360px; height: 85px; font-size: small;" class="text">
-
+        <div id="password" class="text">
             <p id="password massage">If you want to cheat, please enter the first name of the website founder:</p>
             <input id="text box" type="text">
             <button id="next" style="cursor: pointer;" onclick="password()">Next</button>
-
         </div>
 
-        <div style="width:400px; position:absolute; top: 357px; right: 35%; visibility: hidden;" type="button">
-
+        <div id ="startAndGoAway">
             <button id="start" class="button" onclick="openQuestion()">START</button>>
             <button id="goAway" class="button" onclick="endOfGame('goAway')">Go Away</button>>
-
         </div>
 
         <div class="text" style="visibility: hidden">
-
-            <p id="timer"
-                style="width: 100px; background-color: black; color: red; border-radius: 10px;
-                       font-size:36px; text-align: center; position: absolute; right: 800px; top: 30px; border: 4px solid blue">
-            </p>
-
-            <p id="round" style=" width:auto;border-color:black; color: white; width: 224px; border-radius: 10px;
-                       font-size:24px;position: absolute;right: 5px;top: 0%;background-color: black; 
-                       border: 4px solid blue">
-            </p>
-
+            <p id="timer"></p>
+            <p id="round"></p>
         </div>
-        <div style=" cursor: pointer; visibility: hidden">
-            <img id="50/50" alt="extra time"
-                src="http://vignette3.wikia.nocookie.net/millionaire/images/7/7e/5050.png/revision/latest?cb=20160801084559"
-                width="80" height="60" style="top: 60px; right: 270px; position: absolute" onclick="fiftyFifty()">
+
+        <div style="visibility: hidden">
+            
+            <img id="fifty" alt="50/50"
+                src="images/5050.webp"
+                onclick="fiftyFifty()">
             </img>
 
-            <img id="on50/50" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
-                width="80" height="60" style="top: 60px; right: 270px; position: absolute">
+            <img id="noFifty" src="images/Thin-Red-X.png"></img>
+
+            <img id="extraTime" alt="extra time" src="images/clock.png"
+                onclick="extraTime()">
             </img>
 
-            <img id="extraTime" alt="extra time"
-                src="https://ccinfo.unc.edu/wp-content/uploads/sites/219/2018/02/clock.png" width="70" height="60"
-                style=" cursor: pointer; position: absolute;
-              top: 60px; right: 370px; position: absolute" onclick="extraTime()">
-            </img>
+            <img id="noExtraTime" src="images/Thin-Red-X.png"></img>
 
-            <img id="onExtraTime" src="https://pngshare.com/wp-content/uploads/2021/06/Thin-Red-X-10-1024x878.png"
-                width="70" , height="60" style=" cursor: pointer; position: absolute; top: 60px; right: 370px">
-            </img>
         </div>
     </body>
-
 </html>
