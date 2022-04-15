@@ -2,16 +2,23 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        <title>Millioner</title>
+<head>
+    <title>Millioner</title>
 
-        <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
-        <script type="text/javascript" src="app.js"></script>
-    </head>
+    <script type="text/javascript" src="app.js"></script>
+</head>
 
-    <body onload="onLoad() + setAmountList()">
+<body onload="onLoad() + setAmountList()">
 
+    <!-- add background music. autoplay doesn't work in all browsers -->
+    <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13" allow="autoplay"
+        style="display: none;">
+    </iframe>
+
+    <ol reversed id="amountList" class="text"></ol>
+    <div id="openingScreen">
         <p id="text" class="text">
             Welcome to Who Wants To Be A Millioner.<br>
             In this game you can earn a million dollar. <br>
@@ -24,14 +31,7 @@
             GOOD LUCK
         </p>
 
-        <!-- add background music. autoplay doesn't work in all browsers -->
-        <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13"
-             allow="autoplay" style="visibility: hidden;">
-        </iframe>
-
-        <ol reversed id="amountList" class="text"></ol>
-
-        <div id ="startAndGoAway">
+        <div id="startAndGoAway">
             <button id="start" class="button" onclick="openQuestion()">START</button>>
             <button id="goAway" class="button" onclick="endOfGame('goAway')">Go Away</button>>
         </div>
@@ -41,27 +41,24 @@
             <input id="text box" type="text">
             <button id="next" style="cursor: pointer;" onclick="password()">Next</button>
         </div>
+    </div>
 
-        <div class="text" style="visibility: hidden">
-            <p id="timer"></p>
-            <p id="round"></p>
-        </div>
+    <p id="timer"></p>
+    <p id="round"></p>
 
-        <div style="visibility: hidden">
-            
-            <img id="fifty" alt="50/50"
-                src="images/5050.webp"
-                onclick="fiftyFifty()">
-            </img>
+    <div id="lifelines">
+        <img id="fifty" alt="50/50" src="images/5050.webp" onclick="fiftyFifty()">
+        </img>
 
-            <img id="noFifty" src="images/Thin-Red-X.png"></img>
+        <img id="noFifty" src="images/Thin-Red-X.png"></img>
 
-            <img id="extraTime" alt="extra time" src="images/clock.png"
-                onclick="extraTime()">
-            </img>
+        <img id="extraTime" alt="extra time" src="images/clock.png" onclick="extraTime()">
+        </img>
 
-            <img id="noExtraTime" src="images/Thin-Red-X.png"></img>
+        <img id="noExtraTime" src="images/Thin-Red-X.png"></img>
 
-        </div>
-    </body>
+    </div>
+
+</body>
+
 </html>
