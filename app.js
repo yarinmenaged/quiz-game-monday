@@ -4,6 +4,7 @@ let correctAnswer = "";
 let question = "";
 let allAnswers = [];
 let round = 0;
+let quNumber = 0;
 let time = "off";
 const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
     "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
@@ -63,7 +64,7 @@ function changeElement(name, att, newAtt) {
 
 // replace substring with "☼" in questionList
 function indicate(str) {
-    questionList[round] = questionList[round].replace(str, "☼");
+    questionList[quNumber] = questionList[quNumber].replace(str, "☼");
 }
 
 /********************************************** Code ***********************************************/
@@ -99,8 +100,8 @@ function openQuestion() {
     }
 
     setTimeout(function () {
-        timer(0, 30);
         nextQuestion();
+        timer(0, 30);
         hideElements("text", "start", "goAway", "password");
         showElements("round", "fifty", "extraTime");
         if (didExtraTimeUsed) { showElements("noExtraTime") };
@@ -113,11 +114,38 @@ function openQuestion() {
 // load the next question.
 function nextQuestion() {
     round++; // move to the next question.
+    quNumber++;
 
     // split the question data by attributs.
     indicate("type"); indicate("difficulty"); indicate("category");
     indicate("question"); indicate("correct_answer"); indicate("incorrect_answers");
-    let quAttList = questionList[round].split("☼");
+    let quAttList = questionList[quNumber].split("☼");
+
+    // sort by difficulty levels.
+    if (round <= 5) {
+        if (quAttList[3].slice(3, 4) != "e") { // easy
+            round--;
+            nextQuestion();
+            return;
+        }
+        if (round == 5) quNumber = 0;
+    }
+    else if (round <= 10) { // medium
+        if (quAttList[3].slice(3, 4) != "m") {
+            round--;
+            nextQuestion();
+            return;
+        }
+        if (round == 10) quNumber = 0;
+    }
+    else {
+        if (quAttList[3].slice(3, 4) != "h") { // hard
+            round--;
+            nextQuestion();
+            return;
+        }
+    }
+
     question = quAttList[4].slice(3, quAttList[4].length - 3);
 
     allAnswers = []; // init the answers of the current question.
@@ -266,12 +294,16 @@ function checkAnswer(correctAnswer, clickValue) {
             if (didExtraTimeUsed) { hideElements("noExtraTime") };
             if (didFiftyUsed) { hideElements("noFifty") };
 
-            if (round == 5 || round == 10) { // "safe place"
-                changeElement("text", "concat", "<p style='font-size:28px'>This is 'safe place'. your "
-                    + priceAmount[round] + "$ is guaranteed</p>");
+            if (round == 5) { // first "safe place"
+                changeElement("text", "concat", "<p style='font-size:28px; color: gold'>This is 'safe place', your "
+                    + priceAmount[round] + "$ is guaranteed.<br>Now we start with medium-difficulty questions.</p>");
+            }
+            if (round == 10) { // second"safe place"
+                changeElement("text", "concat", "<p style='font-size:28px; color: gold'>This is 'safe place', your "
+                    + priceAmount[round] + "$ is guaranteed.<br>Now we start with high-difficulty questions.</p>");
             }
             if (round == 14) { // before the last question.
-                changeElement("text", "concat", "<p style='font-size:28px'> OMG! Next round is the one million $ question!!!</p>");
+                changeElement("text", "concat", "<p style='font-size:28px; color: gold'> OMG! Next round is the one million $ question!!!</p>");
             }
         }
     }, 1000);
@@ -289,7 +321,7 @@ function endOfGame(status) {
     if (status == "win") {
         isFirst = true;
         changeElement("text", "write into",
-            "<p style='font-size:28px'>WOW! You are the big winner.<br> What are you going to do with your 1,000,000$ ?</p>");
+            "<p style='font-size:28px; color: gold'>WOW! You are the big winner.<br> What are you going to do with your 1,000,000$ ?</p>");
     }
     else if (status == "goAway") {
         changeElement("text", "write into",
@@ -315,6 +347,7 @@ function initNextGame() {
     }, 500);
 
     round = 0;
+    quNumber = 0;
     time = "off";
     didFiftyUsed = false;
     didExtraTimeUsed = false;
