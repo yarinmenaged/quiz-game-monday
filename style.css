@@ -1,7 +1,3 @@
-*{
-    box-sizing: content-box;
-}
-
 body {
     background-position-x: center;
     background-position-y: top;
@@ -17,50 +13,38 @@ body {
     top: 60px;
     right: 0%;
     width: 150px;
-    display: none;
+    visibility: hidden;
     margin: 0;
     padding: 0 1.5em 0 1.7em;
     color: white;
     border: 4px solid blue;
 }
 
-#openingScreen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 4%;
-}
-
-#lifelines {
-    display: flex;
-    margin-left: 60%;
-}
-
 #text {
     font-size: 20px;
     width: 600px;
-    
-    display: none;
+    position: absolute;
+    top: 40px;
+    right: 26%;
+    visibility: hidden;
 }
 
 #password {
-    display: none;
-    margin-top: -1.4%;
+    visibility: hidden;
+    position: absolute;
+    top: 420px;
+    right: 37%;
     width: 360px;
     height: 85px;
     font-size: small;
 }
 
 #startAndGoAway {
-    width: 360px;
-    margin-left: -3%;
-    margin-top: 2%;
-    display: none;
-}
-
-#goAway {
-    margin-top: -4.8%;
+    width: 400px;
+    position: absolute;
+    top: 357px;
+    right: 37%;
+    visibility: hidden;
 }
 
 #timer {
@@ -71,10 +55,9 @@ body {
     font-size: 36px;
     text-align: center;
     position: absolute;
-    right: 68%;
-    top: 12%;
+    right: 800px;
+    top: 30px;
     border: 4px solid blue;
-    display: none;
 }
 
 #round {
@@ -85,48 +68,50 @@ body {
     border-radius: 10px;
     font-size: 24px;
     position: absolute;
-    right: 0.3%;
+    right: 5px;
     top: 0%;
     background-color: black;
     border: 4px solid blue;
-    display: none;
-    font-family: Calibri;
-    text-align: center;
 }
 
 #fifty {
     width: 80px;
     height: 60px;
+    top: 60px;
+    right: 270px;
+    position: absolute;
     cursor: pointer;
-    display: none;
 }
 
 #noFifty {
     width: 80px;
     height: 60px;
-    cursor: pointer;
-    display: none;
+    top: 60px;
+    right: 270px;
     position: absolute;
-    right: 34%;
-    top: 16%;
+    cursor: pointer;
 }
 
 #extraTime {
     width: 70px;
     height: 60px;
-    margin-left: 3%;
     cursor: pointer;
-    display: none;
+    position: absolute;
+    top: 60px;
+    right: 370px;
+    position: absolute;
+    cursor: pointer;
 }
 
 #noExtraTime {
     width: 70px;
     height: 60px;
     cursor: pointer;
-    display: none;
     position: absolute;
-    right: 27%;
-    top: 16%;
+    top: 60px;
+    right: 370px;
+    position: absolute;
+    cursor: pointer;
 }
 
 .text {

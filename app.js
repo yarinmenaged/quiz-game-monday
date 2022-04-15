@@ -7,7 +7,7 @@ let round = 0;
 let quNumber = 0;
 let time = "off";
 const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
-    "32,000", "64,000", "125,000", "250,000", "500,000", "1,000,000"];
+    "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
 
 /**************************************** Helpers ******************************************/
 
@@ -26,13 +26,13 @@ function addPreZeros(number) {
 
 function hideElements() {
     for (let i = 0; i < arguments.length; i++) {
-        document.getElementById(arguments[i]).style.display = "none";
+        document.getElementById(arguments[i]).style.visibility = "hidden";
     }
 }
 
 function showElements() {
     for (let i = 0; i < arguments.length; i++) {
-        document.getElementById(arguments[i]).style.display = "block";
+        document.getElementById(arguments[i]).style.visibility = "visible";
     }
 }
 
@@ -84,8 +84,7 @@ function onLoad() {
         })
 
     setTimeout(function () {
-        showElements("startAndGoAway", "amountList", "text", "password");
-        hideElements("goAway");
+        showElements("start", "amountList", "text", "password");
     }, 650);
 }
 
@@ -101,8 +100,8 @@ function openQuestion() {
     }
 
     setTimeout(function () {
-        timer(0, 30);
         nextQuestion();
+        timer(0, 30);
         hideElements("text", "start", "goAway", "password");
         showElements("round", "fifty", "extraTime");
         if (didExtraTimeUsed) { showElements("noExtraTime") };
@@ -206,8 +205,8 @@ function openAnswers(correctAnswer, answers, question, isFifty) {
     // create question&answer table.
     const table = document.createElement("TABLE");
     table.setAttribute("id", "table");
-    table.style.width = "50%";
-    table.style.marginLeft = "23%";
+    table.style.width = "600px"; table.style.position = "absolute";
+    table.style.right = "270px"; table.style.top = "120px";
     document.body.appendChild(table);
 
     // in case of using 50/50 lifeline- hide 2 inccorect answer.
