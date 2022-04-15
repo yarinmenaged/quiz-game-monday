@@ -7,7 +7,7 @@ let round = 0;
 let quNumber = 0;
 let time = "off";
 const priceAmount = ["0", "100", "200", "300", "500", "1,000", "2,000", "4,000", "8,000", "16,000",
-    "32,000", "64,000", "128,000", "256,000", "500,000", "1,000,000"];
+    "32,000", "64,000", "125,000", "250,000", "500,000", "1,000,000"];
 
 /**************************************** Helpers ******************************************/
 
@@ -26,13 +26,13 @@ function addPreZeros(number) {
 
 function hideElements() {
     for (let i = 0; i < arguments.length; i++) {
-        document.getElementById(arguments[i]).style.visibility = "hidden";
+        document.getElementById(arguments[i]).style.display = "none";
     }
 }
 
 function showElements() {
     for (let i = 0; i < arguments.length; i++) {
-        document.getElementById(arguments[i]).style.visibility = "visible";
+        document.getElementById(arguments[i]).style.display = "block";
     }
 }
 
@@ -84,7 +84,8 @@ function onLoad() {
         })
 
     setTimeout(function () {
-        showElements("start", "amountList", "text", "password");
+        showElements("startAndGoAway", "amountList", "text", "password");
+        hideElements("goAway");
     }, 650);
 }
 
@@ -206,7 +207,7 @@ function openAnswers(correctAnswer, answers, question, isFifty) {
     const table = document.createElement("TABLE");
     table.setAttribute("id", "table");
     table.style.width = "600px"; table.style.position = "absolute";
-    table.style.right = "270px"; table.style.top = "120px";
+    table.style.right = "320px"; table.style.top = "120px";
     document.body.appendChild(table);
 
     // in case of using 50/50 lifeline- hide 2 inccorect answer.

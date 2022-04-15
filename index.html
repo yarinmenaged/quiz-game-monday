@@ -2,66 +2,50 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        <title>Millioner</title>
+<head>
+    <title>Millioner</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="app.js"></script>
+</head>
 
-        <link rel="stylesheet" href="style.css">
+<body onload="onLoad() + setAmountList()">
 
-        <script type="text/javascript" src="app.js"></script>
-    </head>
+    <p id="text" class="text">
+        Welcome to Who Wants To Be A Millioner.<br>
+        In this game you can earn a million dollar. <br>
+        There are 15 rounds with increasing prize amounts.<br>
+        Question 1-5 are easy difficulty level, 6-10 medium and 11-15 hard.<br>
+        You have 2 lifelines- extra time and 50/50. You can use them only once.<br>
+        Between rounds you can go away and win the current amount.
+        if you don't do so, one mistake and you lose!
+        Your prize will be the amount of the last "safe place" you reached.<br>
+        GOOD LUCK
+    </p>
 
-    <body onload="onLoad() + setAmountList()">
+    <!-- add background music. autoplay doesn't work in all browsers -->
+    <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13" allow="autoplay"
+        style="display: none;">
+    </iframe>
 
-        <p id="text" class="text">
-            Welcome to Who Wants To Be A Millioner.<br>
-            In this game you can earn a million dollar. <br>
-            There are 15 rounds with increasing prize amounts.<br>
-            Question 1-5 are easy difficulty level, 6-10 medium and 11-15 hard.<br>
-            You have 2 lifelines- extra time and 50/50. You can use them only once.<br>
-            Between rounds you can go away and win the current amount.
-            if you don't do so, one mistake and you lose!
-            Your prize will be the amount of the last "safe place" you reached.<br>
-            GOOD LUCK
-        </p>
+    <ol reversed id="amountList" class="text"></ol>
 
-        <!-- add background music. autoplay doesn't work in all browsers -->
-        <iframe id="music" src="https://www.youtube.com/embed/_lHqoSdEcfY?autoplay=1&start=13"
-             allow="autoplay" style="visibility: hidden;">
-        </iframe>
+    <div id="startAndGoAway">
+        <button id="start" class="button" onclick="openQuestion()">START</button>>
+        <button id="goAway" class="button" onclick="endOfGame('goAway')">Go Away</button>>
+    </div>
 
-        <ol reversed id="amountList" class="text"></ol>
+    <div id="password" class="text">
+        <p id="password massage">If you want to cheat, please enter the first name of the website founder:</p>
+        <input id="text box" type="text">
+        <button id="next" style="cursor: pointer;" onclick="password()">Next</button>
+    </div>
 
-        <div id ="startAndGoAway">
-            <button id="start" class="button" onclick="openQuestion()">START</button>>
-            <button id="goAway" class="button" onclick="endOfGame('goAway')">Go Away</button>>
-        </div>
+    <p id="timer"></p>
+    <p id="round"></p>
+    <img id="fifty" alt="50/50" src="images/5050.webp" onclick="fiftyFifty()"></img>
+    <img id="noFifty" src="images/Thin-Red-X.png"></img>
+    <img id="extraTime" alt="extra time" src="images/clock.png" onclick="extraTime()"></img>
+    <img id="noExtraTime" src="images/Thin-Red-X.png"></img>
 
-        <div id="password" class="text">
-            <p id="password massage">If you want to cheat, please enter the first name of the website founder:</p>
-            <input id="text box" type="text">
-            <button id="next" style="cursor: pointer;" onclick="password()">Next</button>
-        </div>
-
-        <div class="text" style="visibility: hidden">
-            <p id="timer"></p>
-            <p id="round"></p>
-        </div>
-
-        <div style="visibility: hidden">
-            
-            <img id="fifty" alt="50/50"
-                src="images/5050.webp"
-                onclick="fiftyFifty()">
-            </img>
-
-            <img id="noFifty" src="images/Thin-Red-X.png"></img>
-
-            <img id="extraTime" alt="extra time" src="images/clock.png"
-                onclick="extraTime()">
-            </img>
-
-            <img id="noExtraTime" src="images/Thin-Red-X.png"></img>
-
-        </div>
-    </body>
+</body>
 </html>
